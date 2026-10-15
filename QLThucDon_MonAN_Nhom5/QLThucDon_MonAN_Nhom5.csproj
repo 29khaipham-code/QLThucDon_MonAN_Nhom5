@@ -163,8 +163,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\BaoCaoDAL.cs" />
+    <Compile Include="DAL\DanhMucDAL.cs" />
+    <Compile Include="DAL\DauBepDAL.cs" />
     <Compile Include="DAL\DbHelper.cs" />
+    <Compile Include="DAL\KhachHangDAL.cs" />
     <Compile Include="DAL\MonAnDAL.cs" />
+    <Compile Include="DAL\NguyenLieuDAL.cs" />
+    <Compile Include="DAL\ThucDonDAL.cs" />
     <Compile Include="DTO\ChiTietThucDonDTO.cs" />
     <Compile Include="DTO\DanhMucDTO.cs" />
     <Compile Include="DTO\DauBepDTO.cs" />

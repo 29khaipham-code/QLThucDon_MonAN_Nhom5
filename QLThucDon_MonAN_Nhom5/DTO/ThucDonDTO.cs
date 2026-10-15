@@ -12,14 +12,10 @@ namespace QLThucDon_MonAN_Nhom5.DTO
         public string MaKhachHang { get; set; }
         public string TenKhachHang { get; set; }
         public string MaSoThue { get; set; }
-        public DateTime NgayDung { get; set; } = DateTime.Now;
-        public decimal ThueVAT { get; set; }       // phần trăm: 8 = 8%
-        public decimal GiamGia { get; set; }       // số tiền
+        public DateTime NgayDung { get; set; }
+        public decimal ThueVAT { get; set; }
+        public decimal GiamGia { get; set; }
         public decimal TongTien { get; set; }
-        public List<ChiTietThucDonDTO> ChiTiet { get; set; } = new List<ChiTietThucDonDTO>();
-
-        //Tổng trước thuế/giảm giá, dùng để xem trước trên form
-        public decimal TongTienHang => ChiTiet.Sum(c => c.ThanhTien);
 
     }
 }

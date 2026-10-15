@@ -11,6 +11,6 @@ namespace QLThucDon_MonAN_Nhom5.DTO
     {
         public string Ma { get; set; }
         public string Ten { get; set; }
-        public override string ToString() => Ten;
+        
     }
 }

@@ -13,6 +13,5 @@ namespace QLThucDon_MonAN_Nhom5.DTO
         public string DiaChi { get; set; }
         public string DienThoai { get; set; }
         public string MaSoThue { get; set; }
-        public override string ToString() => TenKhachHang;
     }
 }

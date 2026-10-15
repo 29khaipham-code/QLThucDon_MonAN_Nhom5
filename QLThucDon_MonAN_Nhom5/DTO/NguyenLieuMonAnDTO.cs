@@ -14,6 +14,6 @@ namespace QLThucDon_MonAN_Nhom5.DTO
         public string TenDonViTinh { get; set; }
         public decimal SoLuong { get; set; }
         public decimal DonGia { get; set; }
-        public decimal ThanhTien => SoLuong * DonGia;
+        public decimal ThanhTien { get; set; }
     }
 }

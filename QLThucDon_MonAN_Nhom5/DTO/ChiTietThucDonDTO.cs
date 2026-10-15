@@ -13,8 +13,8 @@ namespace QLThucDon_MonAN_Nhom5.DTO
         public string TenMonAn { get; set; }
         public string MaDauBep { get; set; }
         public string TenDauBep { get; set; }
-        public int SoLuong { get; set; }    
-        public decimal DonGia { get; set; }        // đơn giá món hiện tại (chỉ để hiển thị)
+        public int SoLuong { get; set; }
+        public decimal DonGia { get; set; }
         public decimal ThanhTien { get; set; }
     }
 }

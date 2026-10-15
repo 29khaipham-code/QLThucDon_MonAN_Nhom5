@@ -31,11 +31,11 @@ namespace QLThucDon_MonAN_Nhom5.DAL
 
         public static DataTable ExecuteDataTable(string sql, params SqlParameter[] ps)
         {
-            using var conn = CreateConnection();
-            using var cmd = Build(conn, null, sql, ps);
-            using var da = new SqlDataAdapter(cmd);
-            var dt = new DataTable();
-            da.Fill(dt);
+            using var conn = CreateConnection();//mở kết nối
+            using var cmd = Build(conn, null, sql, ps);//tạo command
+            using var da = new SqlDataAdapter(cmd);//tạo data adapter(data adapter là cầu nối giữa command và data table)
+            var dt = new DataTable();//tạo data table
+            da.Fill(dt);//đổ dữ liệu vào data table
             return dt;
         }
 
@@ -57,6 +57,14 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             using var cmd = Build(conn, null, sql, ps);
             return cmd.ExecuteScalar();
         }
+        public static List<T> ExecuteList<T>(SqlConnection c, SqlTransaction t, string sql, Func<SqlDataReader, T> map, params SqlParameter[] ps)
+        {
+            var list = new List<T>();
+            using var cmd = Build(c, t, sql, ps);
+            using var r = cmd.ExecuteReader();
+            while (r.Read()) list.Add(map(r));
+            return list;
+        }
 
         // ---------- Thao tác ghi ----------
         public static int ExecuteNonQuery(string sql, params SqlParameter[] ps)
@@ -67,14 +75,14 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             return cmd.ExecuteNonQuery();
         }
 
-        /// <summary>Chạy trong transaction có sẵn.</summary>
+        //Chạy trong transaction có sẵn
         public static int ExecuteNonQuery(SqlConnection c, SqlTransaction t, string sql, params SqlParameter[] ps)
         {
             using var cmd = Build(c, t, sql, ps);
             return cmd.ExecuteNonQuery();
         }
 
-        /// <summary>Chạy nhiều lệnh trong 1 transaction; lỗi -> rollback toàn bộ rồi ném lại exception.</summary>
+        //Chạy nhiều lệnh trong 1 transaction; lỗi -> rollback toàn bộ rồi ném lại exception
         public static void RunInTransaction(Action<SqlConnection, SqlTransaction> work)
         {
             using var conn = CreateConnection();

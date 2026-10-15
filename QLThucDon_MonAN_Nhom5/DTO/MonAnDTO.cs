@@ -14,10 +14,8 @@ namespace QLThucDon_MonAN_Nhom5.DTO
         public string TenLoai { get; set; }
         public string MaCongDung { get; set; }
         public string TenCongDung { get; set; }
-        public decimal DonGia { get; set; }        // tự tính từ nguyên liệu (trigger trong DB)
+        public decimal DonGia { get; set; }
         public string CachLam { get; set; }
         public string YeuCau { get; set; }
-        public List<NguyenLieuMonAnDTO> NguyenLieu { get; set; } = new List<NguyenLieuMonAnDTO>();
-        public override string ToString() => TenMonAn;
     }
 }
