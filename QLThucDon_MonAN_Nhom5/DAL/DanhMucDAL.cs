@@ -48,7 +48,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 DbHelper.P("@Ma", d.Ma), DbHelper.P("@Ten", d.Ten));
         }
 
-        /// <summary>Ném SqlException (Number = 547) nếu danh mục đang được dùng (vi phạm FK) - BLL/GUI nên bắt và báo người dùng.</summary>
+        //Ném SqlException (Number = 547) nếu danh mục đang được dùng (vi phạm FK) - BLL/GUI nên bắt và báo người dùng
         public int Delete(LoaiDanhMuc loai, string ma)
         {
             var m = Map[loai];

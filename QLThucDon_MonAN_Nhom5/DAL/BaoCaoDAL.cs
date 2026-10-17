@@ -26,14 +26,17 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                    ON ct.MaDauBep = d.MaDauBep
             GROUP BY d.MaDauBep, d.TenDauBep
             ORDER BY DoanhThu DESC, d.TenDauBep";
-
+            
             public DataTable DoanhThuTheoThang(int nam, int thang) => DoanhThu(nam, thang, null);
             public DataTable DoanhThuTheoQuy(int nam, int quy) => DoanhThu(nam, null, quy);
             public DataTable DoanhThuTheoNam(int nam) => DoanhThu(nam, null, null);
-
+            
             private static DataTable DoanhThu(int nam, int? thang, int? quy) =>
                 DbHelper.ExecuteDataTable(DoanhThuSql,
-                    DbHelper.P("@Nam", nam), DbHelper.P("@Thang", thang), DbHelper.P("@Quy", quy));
+                    DbHelper.P("@Nam", nam),
+                    DbHelper.P("@Thang", thang), 
+                    DbHelper.P("@Quy", quy)
+                    );
 
             // ---------- Yêu cầu 6: thông tin đầy đủ các món ăn (kèm nguyên liệu) ----------
             public DataTable MonAnDayDu() => DbHelper.ExecuteDataTable(@"

@@ -163,6 +163,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\BaoCaoBLL.cs" />
+    <Compile Include="BLL\BusinessException.cs" />
+    <Compile Include="BLL\Check.cs" />
+    <Compile Include="BLL\DanhMucBLL.cs" />
+    <Compile Include="BLL\DauBepBLL.cs" />
+    <Compile Include="BLL\DbGuard.cs" />
+    <Compile Include="BLL\KhachHangBLL.cs" />
+    <Compile Include="BLL\MonAnBLL.cs" />
+    <Compile Include="BLL\NguyenLieuBLL.cs" />
+    <Compile Include="BLL\ThucDonBLL.cs" />
     <Compile Include="DAL\BaoCaoDAL.cs" />
     <Compile Include="DAL\DanhMucDAL.cs" />
     <Compile Include="DAL\DauBepDAL.cs" />
@@ -213,7 +223,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BLL\" />
     <Folder Include="Database\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

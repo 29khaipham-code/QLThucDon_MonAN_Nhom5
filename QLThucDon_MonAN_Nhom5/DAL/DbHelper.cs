@@ -5,21 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Configuration;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
     // lop tien ich truy cap SQL Server (ADO.NET). Moi DAL deu di qua lop nay.
     public static class DbHelper
     {
-        public static string ConnectionString { get; set; } =
-            @"Server=.\SQLEXPRESS;Database=QuanLyDauBep;Trusted_Connection=True;TrustServerCertificate=True;";
-
-        public static SqlConnection CreateConnection() => new SqlConnection(ConnectionString);
+        public static string ConnectionString => ConfigurationManager.ConnectionStrings["QuanLyDauBep"].ConnectionString;
 
         public static SqlParameter P(string name, object value) =>
-            new SqlParameter(name, value ?? DBNull.Value);
+            new SqlParameter(name, value ?? DBNull.Value); 
 
         public static string NullIfEmpty(string s) => string.IsNullOrWhiteSpace(s) ? null : s.Trim();
+
+        // khai bao phuong thuc
+        public static SqlConnection CreateConnection()
+        {
+            return new SqlConnection(ConnectionString);
+        }
 
         public static SqlCommand Build(SqlConnection c, SqlTransaction t, string sql, SqlParameter[] ps)
         {
@@ -85,7 +89,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
         //Chạy nhiều lệnh trong 1 transaction; lỗi -> rollback toàn bộ rồi ném lại exception
         public static void RunInTransaction(Action<SqlConnection, SqlTransaction> work)
         {
-            using var conn = CreateConnection();
+            using var conn = CreateConnection(); 
             conn.Open();
             using var tran = conn.BeginTransaction();
             try
@@ -100,7 +104,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             }
         }
 
-        /// <summary>Sinh mã tiếp theo, vd NextCode("MonAn","MaMonAn","MA",3) -> "MA013". Tham số table/col chỉ truyền hằng trong code.</summary>
+        //Sinh mã tiếp theo, vd NextCode("MonAn","MaMonAn","MA",3) -> "MA013". Tham số table/col chỉ truyền hằng trong code
         public static string NextCode(string table, string column, string prefix, int width)
         {
             string sql = $@"SELECT ISNULL(MAX(CAST(SUBSTRING({column}, LEN(@p) + 1, 20) AS INT)), 0) + 1
