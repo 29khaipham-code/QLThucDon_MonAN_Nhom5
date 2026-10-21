@@ -12,7 +12,8 @@ using System.Globalization;
 using System.Reflection;
 using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
-//using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
+using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
+
 
 namespace QLThucDon_MonAN_Nhom5.GUI
 {
@@ -77,12 +78,12 @@ namespace QLThucDon_MonAN_Nhom5.GUI
 
         private void DangKyForm()
         {
-            //_dsForm["btnLoaiMon"] = () => new frmDanhMuc(LoaiDanhMuc.LoaiMon);
-            //_dsForm["btnCongDung"] = () => new frmDanhMuc(LoaiDanhMuc.CongDung);
-            //_dsForm["btnDonViTinh"] = () => new frmDanhMuc(LoaiDanhMuc.DonViTinh);
-            //_dsForm["btnNoiHoc"] = () => new frmDanhMuc(LoaiDanhMuc.NoiHoc);
-            //_dsForm["btnTrinhDo"] = () => new frmDanhMuc(LoaiDanhMuc.TrinhDo);
-            //_dsForm["btnXepLoai"] = () => new frmDanhMuc(LoaiDanhMuc.XepLoai);
+            _dsForm["btnLoaiMon"] = () => new frmDanhMuc(LoaiDanhMuc.LoaiMon);
+            _dsForm["btnCongDung"] = () => new frmDanhMuc(LoaiDanhMuc.CongDung);
+            _dsForm["btnDonViTinh"] = () => new frmDanhMuc(LoaiDanhMuc.DonViTinh);
+            _dsForm["btnNoiHoc"] = () => new frmDanhMuc(LoaiDanhMuc.NoiHoc);
+            _dsForm["btnTrinhDo"] = () => new frmDanhMuc(LoaiDanhMuc.TrinhDo);
+            _dsForm["btnXepLoai"] = () => new frmDanhMuc(LoaiDanhMuc.XepLoai);
 
             // _dsForm["btnNguyenLieu"]     = () => new frmNguyenLieu();
             // _dsForm["btnMonAn"]          = () => new frmMonAn();
