@@ -53,7 +53,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         {
             InitializeComponent();
             ApDungGiaoDien();
-            DoubleBuffer(flowMenu);   // giảm giật khi chạy hoạt ảnh
+            DoubleBuffer(flowMenu);   // giảm giật khi chạy hoạt ảnhh
 
             flowMenu.AutoScroll = true;
             ShowScrollBar(flowMenu.Handle, SB_VERT, 0);
