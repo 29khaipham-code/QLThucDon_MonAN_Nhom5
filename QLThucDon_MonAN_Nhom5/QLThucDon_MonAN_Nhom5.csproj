@@ -211,6 +211,10 @@
     <Compile Include="GUI\Forms\DanhMuc\frmDauBep.Designer.cs">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.Designer.cs" />
     <Compile Include="GUI\Forms\TimKiem\frmTimKiemDauBep.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -238,6 +242,7 @@
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDauBep.resx">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx" />
     <EmbeddedResource Include="GUI\Forms\TimKiem\frmTimKiemDauBep.resx">
       <DependentUpon>frmTimKiemDauBep.cs</DependentUpon>
     </EmbeddedResource>
@@ -274,7 +279,6 @@
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="GUI\Forms\BaoCao\" />
-    <Folder Include="GUI\Forms\NghiepVu\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />

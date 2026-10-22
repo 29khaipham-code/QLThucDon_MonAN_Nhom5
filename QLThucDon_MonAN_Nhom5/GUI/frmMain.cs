@@ -14,6 +14,8 @@ using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem;
+using QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu;
+
 
 
 namespace QLThucDon_MonAN_Nhom5.GUI
@@ -90,7 +92,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             // _dsForm["btnMonAn"]          = () => new frmMonAn();
              _dsForm["btnDauBep"]         = () => new frmDauBep();
             // _dsForm["btnKhachHang"]      = () => new frmKhachHang();
-            // _dsForm["btnLapThucDon"]     = () => new frmThucDon();
+            _dsForm["btnLapThucDon"] = () => new frmThucDon();
             _dsForm["btnTimKiemMonAn"]       = () => new frmTimKiemMonAn();
              _dsForm["btnTimKiemDauBep"]      = () => new frmTimKiemDauBep();
             // _dsForm["btnBcDoanhThu"]     = () => new frmBaoCaoDoanhThu();
