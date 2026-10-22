@@ -214,7 +214,9 @@
     <Compile Include="GUI\Forms\NghiepVu\frmThucDon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.Designer.cs" />
+    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.Designer.cs">
+      <DependentUpon>frmThucDon.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\TimKiem\frmTimKiemDauBep.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,7 +244,9 @@
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDauBep.resx">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx" />
+    <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx">
+      <DependentUpon>frmThucDon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\TimKiem\frmTimKiemDauBep.resx">
       <DependentUpon>frmTimKiemDauBep.cs</DependentUpon>
     </EmbeddedResource>

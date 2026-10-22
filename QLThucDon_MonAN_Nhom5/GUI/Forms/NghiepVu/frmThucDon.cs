@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -12,7 +11,7 @@ using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 
 
-namespace QLThucDon_MonAN_Nhom5.GUI
+namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
 {
     public partial class frmThucDon : Form
     {
@@ -32,7 +31,6 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         // Ánh xạ trực tiếp đến control đang có trong Designer gốc.
         // KHÔNG đổi tên hay chỉnh sửa frmThucDon.Designer.cs.
         private TextBox txtSoThucDon => textBox1;
-        private ComboBox cboNgayDung => comboBox1;
         private ComboBox cboKhachHang => comboBox2;
         private TextBox txtMaSoThue => textBox2;
         private TextBox txtVAT => textBox3;
@@ -52,23 +50,12 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         private Button btnXoa => button5;
         private Button btnInThucDon => button6;
 
-        // Designer dùng ComboBox cho Ngày dùng, vì thế xử lý ngày qua Text.
+        // Ô Ngày dùng đã được thay bằng DateTimePicker tên dateTimePicker1.
         private void KhoiTaoNgayDung()
         {
-            cboNgayDung.DropDownStyle = ComboBoxStyle.DropDown;
-            cboNgayDung.Items.Clear();
-            for (int i = 0; i <= 90; i++)
-                cboNgayDung.Items.Add(DateTime.Today.AddDays(i).ToString("dd/MM/yyyy"));
-            cboNgayDung.Text = DateTime.Today.ToString("dd/MM/yyyy");
-        }
-
-        private bool ThuDocNgayDung(out DateTime ngay)
-        {
-            string s = cboNgayDung.Text.Trim();
-            return DateTime.TryParseExact(s,
-                new[] { "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd" },
-                CultureInfo.GetCultureInfo("vi-VN"),
-                DateTimeStyles.None, out ngay);
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            dateTimePicker1.Value = DateTime.Today;
         }
 
         public frmThucDon()
@@ -93,7 +80,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
                 (s, e) => LoadMonAn();
 
             cboDauBep.SelectedIndexChanged +=
-                (s, e) => LoadMonAn();
+(s, e) => LoadMonAn();
 
             cboMonAn.SelectedIndexChanged +=
                 (s, e) => CapNhatDonGia();
@@ -244,7 +231,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         private void ThemCot(
             string prop,
             string header,
-            float weight,
+float weight,
             string format)
         {
             var col = new DataGridViewTextBoxColumn
@@ -273,7 +260,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             txtVAT.Text = "8";
             txtGiamGia.Text = "0";
             txtTongTien.Text = "0";
-            cboNgayDung.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            dateTimePicker1.Value = DateTime.Today;
 
             try
             {
@@ -337,7 +324,6 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         {
             if (dangTai)
                 return;
-
             string maLoai = cboLoaiMon.SelectedValue as string;
             string maBep = cboDauBep.SelectedValue as string;
 
@@ -438,7 +424,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
                 NumberStyles.Number,
                 CultureInfo.InvariantCulture,
                 out decimal d)
-                ? d
+? d
                 : 0m;
         }
 
@@ -534,7 +520,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
                 dtChiTiet.Rows.Add(
                     mon.MaMonAn,
                     mon.TenMonAn,
-                    bep.MaDauBep,
+bep.MaDauBep,
                     bep.TenDauBep,
                     sl,
                     mon.DonGia,
@@ -588,7 +574,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             txtGiamGia.Text = "0";
             txtSoLuong.Clear();
 
-            cboNgayDung.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            dateTimePicker1.Value = DateTime.Today;
 
             try
             {
@@ -640,19 +626,13 @@ namespace QLThucDon_MonAN_Nhom5.GUI
                     "Thực đơn chưa có món nào. Hãy thêm món trước khi lưu!",
                     "Thông báo",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+MessageBoxIcon.Warning);
 
                 return;
             }
 
-            // Designer gốc dùng ComboBox cho ngày, cần kiểm tra trước khi lưu.
-            DateTime ngayDung;
-            if (!ThuDocNgayDung(out ngayDung))
-            {
-                Ui.Error("Ngày dùng không hợp lệ. Nhập theo dạng dd/MM/yyyy.");
-                cboNgayDung.Focus();
-                return;
-            }
+            // Lấy ngày đã chọn trực tiếp từ DateTimePicker.
+            DateTime ngayDung = dateTimePicker1.Value.Date;
 
             // Đóng gói thông tin thực đơn
             var td = new ThucDonDTO
@@ -782,15 +762,10 @@ namespace QLThucDon_MonAN_Nhom5.GUI
         {
 
         }
-    }
-}
 
-// Lớp tương thích khi frmMain sử dụng namespace GUI.Forms.NghiepVu.
-// Không đổi namespace của Form gốc vì Designer vẫn ở GUI.
-namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
-{
-    public class frmThucDon : QLThucDon_MonAN_Nhom5.GUI.frmThucDon
-    {
-        public frmThucDon() : base() { }
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
