@@ -4,6 +4,7 @@ using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem
@@ -18,7 +19,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem
         {
             InitializeComponent();
 
-            
+            ApDungGiaoDien();
 
             this.Load += frmTimKiemDauBep_Load;
             btnTim.Click += btnTim_Click;
@@ -171,5 +172,60 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem
 
             TimKiemDauBep();
         }
+
+        private void ApDungGiaoDien()
+        {
+            this.BackColor = Ui.Back;
+            this.Font = new Font("Segoe UI", 9F);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Text = "Tìm kiếm đầu bếp";
+
+            // Ô nhập tên đầu bếp
+            txtTen.BackColor = Ui.Surface;
+            txtTen.ForeColor = Ui.Text;
+            txtTen.Font = new Font("Segoe UI", 9F);
+
+            // Các ComboBox
+            cboNoiHoc.BackColor = Ui.Surface;
+            cboNoiHoc.ForeColor = Ui.Text;
+            cboNoiHoc.Font = new Font("Segoe UI", 9F);
+
+            cboMonAn.BackColor = Ui.Surface;
+            cboMonAn.ForeColor = Ui.Text;
+            cboMonAn.Font = new Font("Segoe UI", 9F);
+
+            // Nút thao tác
+            // Áp dụng giao diện cho nút có sẵn trong Designer
+            btnTim.Text = "Tìm";
+            btnTim.BackColor = Ui.Accent;
+            btnTim.ForeColor = Color.White;
+            btnTim.FlatStyle = FlatStyle.Flat;
+            btnTim.FlatAppearance.BorderSize = 0;
+
+            btnLamMoi.Text = "Làm mới";
+            btnLamMoi.BackColor = Ui.Surface;
+            btnLamMoi.ForeColor = Ui.Dark;
+            btnLamMoi.FlatStyle = FlatStyle.Flat;
+            btnLamMoi.FlatAppearance.BorderColor = Ui.Border;
+            btnLamMoi.FlatAppearance.BorderSize = 1;
+
+            // Bảng dữ liệu
+            Ui.StyleGrid(dgvDauBep);
+
+            dgvDauBep.Font = new Font("Segoe UI", 9F);
+            dgvDauBep.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 9F, FontStyle.Bold);
+
+            dgvDauBep.RowTemplate.Height = 30;
+            dgvDauBep.BorderStyle = BorderStyle.None;
+            dgvDauBep.CellBorderStyle =
+                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvDauBep.RowHeadersVisible = false;
+
+            // Nhãn kết quả
+            lblKetQua.ForeColor = Ui.Dark;
+            lblKetQua.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        }
+
     }
 }
