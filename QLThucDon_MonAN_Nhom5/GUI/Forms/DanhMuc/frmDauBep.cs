@@ -1,13 +1,14 @@
-using System;
-using System.Data;
-using System.Linq;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Drawing;
 using Microsoft.Data.SqlClient;
-using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.BLL;
+using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 {
@@ -310,6 +311,9 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         {
             try
             {
+                if(ValidateDiaChi(textBox4.Text) == false) { return; }
+                if (ValidateHoTen(textBox2.Text) == false) { return; }
+                if (ValidateSoDienThoai(textBox3.Text) == false) {return; }
                 if (string.IsNullOrWhiteSpace(textBox2.Text)) { MessageBox.Show("Tên đầu bếp không được để trống."); textBox2.Focus(); return; }
                 if (comboBox1.SelectedValue == null) { MessageBox.Show("Database chưa có danh mục trình độ."); return; }
                 var d = new DauBepDTO {
@@ -353,5 +357,85 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             string chiTiet = ex is SqlException ? "\nChi tiết SQL: " + ex.Message : "\nChi tiết: " + ex.Message;
             MessageBox.Show(noiDung + chiTiet, "Quản lý đầu bếp", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private bool ValidateHoTen(string hoTen)
+        {
+            hoTen = hoTen.Trim();
+
+            if (string.IsNullOrWhiteSpace(hoTen))
+            {
+                MessageBox.Show(
+                    "Họ tên không được để trống!",
+                    "Lỗi nhập liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            // Chỉ cho phép chữ cái tiếng Việt và khoảng trắng
+            if (!Regex.IsMatch(hoTen,
+                @"^[\p{L}]+(?:\s+[\p{L}]+)*$"))
+            {
+                MessageBox.Show(
+                    "Họ tên chỉ được chứa chữ cái và khoảng trắng!",
+                    "Lỗi nhập liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateSoDienThoai(string soDienThoai)
+        {
+            soDienThoai = soDienThoai.Trim();
+
+            // Số điện thoại Việt Nam: 10 chữ số, bắt đầu bằng 0
+            if (!Regex.IsMatch(soDienThoai, @"^0\d{9}$"))
+            {
+                MessageBox.Show(
+                    "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0!",
+                    "Lỗi nhập liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidateDiaChi(string diaChi)
+        {
+            diaChi = diaChi.Trim();
+
+            if (string.IsNullOrWhiteSpace(diaChi))
+            {
+                MessageBox.Show(
+                    "Địa chỉ không được để trống!",
+                    "Lỗi nhập liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (diaChi.Length < 5 || diaChi.Length > 200)
+            {
+                MessageBox.Show(
+                    "Địa chỉ phải có từ 5 đến 200 ký tự!",
+                    "Lỗi nhập liệu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
