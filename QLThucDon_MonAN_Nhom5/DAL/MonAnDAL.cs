@@ -115,5 +115,18 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     "INSERT INTO NguyenLieu_MonAn(MaMonAn,MaNguyenLieu,SoLuong) VALUES(@MA,@NL,@SL)",
                     DbHelper.P("@MA", maMonAn), DbHelper.P("@NL", nl.MaNguyenLieu), DbHelper.P("@SL", nl.SoLuong));
         }
+        // Lấy danh sách loại món
+        public DataTable GetLoaiMon()
+        {
+            string sql = "SELECT MaLoai, TenLoai FROM LoaiMon ORDER BY TenLoai";
+            return DbHelper.ExecuteDataTable(sql);
+        }
+
+        // Lấy danh sách công dụng
+        public DataTable GetCongDung()
+        {
+            string sql = "SELECT MaCongDung, TenCongDung FROM CongDung ORDER BY TenCongDung";
+            return DbHelper.ExecuteDataTable(sql);
+        }
     }
 }

@@ -89,8 +89,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             _dsForm["btnXepLoai"] = () => new frmDanhMuc(LoaiDanhMuc.XepLoai);
 
             // _dsForm["btnNguyenLieu"]     = () => new frmNguyenLieu();
-            // _dsForm["btnMonAn"]          = () => new frmMonAn();
-             _dsForm["btnDauBep"]         = () => new frmDauBep();
+            _dsForm["btnMonAn"] = () => new frmMonAn();
+            _dsForm["btnDauBep"]         = () => new frmDauBep();
             // _dsForm["btnKhachHang"]      = () => new frmKhachHang();
             _dsForm["btnLapThucDon"] = () => new frmThucDon();
             _dsForm["btnTimKiemMonAn"]       = () => new frmTimKiemMonAn();
