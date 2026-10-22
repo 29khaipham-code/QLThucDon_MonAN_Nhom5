@@ -205,6 +205,18 @@
     <Compile Include="GUI\Forms\DanhMuc\frmDanhMuc.Designer.cs">
       <DependentUpon>frmDanhMuc.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\TimKiem\frmTimKiemDauBep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\TimKiem\frmTimKiemDauBep.Designer.cs">
+      <DependentUpon>frmTimKiemDauBep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\TimKiem\frmTimKiemMonAn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\TimKiem\frmTimKiemMonAn.Designer.cs">
+      <DependentUpon>frmTimKiemMonAn.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +228,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDanhMuc.resx">
       <DependentUpon>frmDanhMuc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\TimKiem\frmTimKiemDauBep.resx">
+      <DependentUpon>frmTimKiemDauBep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\TimKiem\frmTimKiemMonAn.resx">
+      <DependentUpon>frmTimKiemMonAn.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
@@ -248,7 +266,6 @@
     <Folder Include="Database\" />
     <Folder Include="GUI\Forms\BaoCao\" />
     <Folder Include="GUI\Forms\NghiepVu\" />
-    <Folder Include="GUI\Forms\TimKiem\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />

@@ -13,6 +13,7 @@ using System.Reflection;
 using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
+using QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem;
 
 
 namespace QLThucDon_MonAN_Nhom5.GUI
@@ -90,8 +91,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             // _dsForm["btnDauBep"]         = () => new frmDauBep();
             // _dsForm["btnKhachHang"]      = () => new frmKhachHang();
             // _dsForm["btnLapThucDon"]     = () => new frmThucDon();
-            // _dsForm["btnTimMonAn"]       = () => new frmTimKiemMonAn();
-            // _dsForm["btnTimDauBep"]      = () => new frmTimKiemDauBep();
+             _dsForm["btnTimKiemMonAn"]       = () => new frmTimKiemMonAn();
+             _dsForm["btnTimKiemDauBep"]      = () => new frmTimKiemDauBep();
             // _dsForm["btnBcDoanhThu"]     = () => new frmBaoCaoDoanhThu();
             // _dsForm["btnBcMonAn"]        = () => new frmBaoCaoMonAn();
             // _dsForm["btnBcMonTheoBep"]   = () => new frmBaoCaoMonTheoDauBep();
