@@ -48,13 +48,16 @@
             this.btnTimKiemMonAn = new System.Windows.Forms.Button();
             this.btnTimKiemDauBep = new System.Windows.Forms.Button();
             this.btnNhomBaoCao = new System.Windows.Forms.Button();
-            this.btnBaoCaoDoanhThu = new System.Windows.Forms.Button();
+            this.btnBcDoanhThu = new System.Windows.Forms.Button();
             this.lblThuongHieu = new System.Windows.Forms.Label();
             this.btnThoat = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.lblGio = new System.Windows.Forms.Label();
             this.lblTieuDe = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnBcMonAn = new System.Windows.Forms.Button();
+            this.btnBcMonTheoBep = new System.Windows.Forms.Button();
+            this.btnBcThucDon = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowMenu.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -92,7 +95,10 @@
             this.flowMenu.Controls.Add(this.btnTimKiemMonAn);
             this.flowMenu.Controls.Add(this.btnTimKiemDauBep);
             this.flowMenu.Controls.Add(this.btnNhomBaoCao);
-            this.flowMenu.Controls.Add(this.btnBaoCaoDoanhThu);
+            this.flowMenu.Controls.Add(this.btnBcDoanhThu);
+            this.flowMenu.Controls.Add(this.btnBcMonAn);
+            this.flowMenu.Controls.Add(this.btnBcMonTheoBep);
+            this.flowMenu.Controls.Add(this.btnBcThucDon);
             this.flowMenu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowMenu.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowMenu.Location = new System.Drawing.Point(0, 88);
@@ -356,20 +362,20 @@
             this.btnNhomBaoCao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNhomBaoCao.UseVisualStyleBackColor = false;
             // 
-            // btnBaoCaoDoanhThu
+            // btnBcDoanhThu
             // 
-            this.btnBaoCaoDoanhThu.FlatAppearance.BorderSize = 0;
-            this.btnBaoCaoDoanhThu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBaoCaoDoanhThu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(212)))));
-            this.btnBaoCaoDoanhThu.Location = new System.Drawing.Point(0, 740);
-            this.btnBaoCaoDoanhThu.Margin = new System.Windows.Forms.Padding(0);
-            this.btnBaoCaoDoanhThu.Name = "btnBaoCaoDoanhThu";
-            this.btnBaoCaoDoanhThu.Padding = new System.Windows.Forms.Padding(32, 0, 0, 0);
-            this.btnBaoCaoDoanhThu.Size = new System.Drawing.Size(240, 40);
-            this.btnBaoCaoDoanhThu.TabIndex = 18;
-            this.btnBaoCaoDoanhThu.Text = "Bao cao Doanh Thu";
-            this.btnBaoCaoDoanhThu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBaoCaoDoanhThu.UseVisualStyleBackColor = false;
+            this.btnBcDoanhThu.FlatAppearance.BorderSize = 0;
+            this.btnBcDoanhThu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBcDoanhThu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(212)))));
+            this.btnBcDoanhThu.Location = new System.Drawing.Point(0, 740);
+            this.btnBcDoanhThu.Margin = new System.Windows.Forms.Padding(0);
+            this.btnBcDoanhThu.Name = "btnBcDoanhThu";
+            this.btnBcDoanhThu.Padding = new System.Windows.Forms.Padding(32, 0, 0, 0);
+            this.btnBcDoanhThu.Size = new System.Drawing.Size(240, 40);
+            this.btnBcDoanhThu.TabIndex = 18;
+            this.btnBcDoanhThu.Text = "Bao cao Doanh Thu";
+            this.btnBcDoanhThu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBcDoanhThu.UseVisualStyleBackColor = false;
             // 
             // lblThuongHieu
             // 
@@ -434,6 +440,51 @@
             this.timer1.Enabled = true;
             this.timer1.Interval = 1000;
             // 
+            // btnBcMonAn
+            // 
+            this.btnBcMonAn.FlatAppearance.BorderSize = 0;
+            this.btnBcMonAn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBcMonAn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(212)))));
+            this.btnBcMonAn.Location = new System.Drawing.Point(0, 780);
+            this.btnBcMonAn.Margin = new System.Windows.Forms.Padding(0);
+            this.btnBcMonAn.Name = "btnBcMonAn";
+            this.btnBcMonAn.Padding = new System.Windows.Forms.Padding(32, 0, 0, 0);
+            this.btnBcMonAn.Size = new System.Drawing.Size(240, 40);
+            this.btnBcMonAn.TabIndex = 19;
+            this.btnBcMonAn.Text = "Bao cao món ăn";
+            this.btnBcMonAn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBcMonAn.UseVisualStyleBackColor = false;
+            // 
+            // btnBcMonTheoBep
+            // 
+            this.btnBcMonTheoBep.FlatAppearance.BorderSize = 0;
+            this.btnBcMonTheoBep.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBcMonTheoBep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(212)))));
+            this.btnBcMonTheoBep.Location = new System.Drawing.Point(0, 820);
+            this.btnBcMonTheoBep.Margin = new System.Windows.Forms.Padding(0);
+            this.btnBcMonTheoBep.Name = "btnBcMonTheoBep";
+            this.btnBcMonTheoBep.Padding = new System.Windows.Forms.Padding(32, 0, 0, 0);
+            this.btnBcMonTheoBep.Size = new System.Drawing.Size(240, 40);
+            this.btnBcMonTheoBep.TabIndex = 20;
+            this.btnBcMonTheoBep.Text = "Báo Cáo món theo bếp";
+            this.btnBcMonTheoBep.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBcMonTheoBep.UseVisualStyleBackColor = false;
+            // 
+            // btnBcThucDon
+            // 
+            this.btnBcThucDon.FlatAppearance.BorderSize = 0;
+            this.btnBcThucDon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBcThucDon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(212)))));
+            this.btnBcThucDon.Location = new System.Drawing.Point(0, 860);
+            this.btnBcThucDon.Margin = new System.Windows.Forms.Padding(0);
+            this.btnBcThucDon.Name = "btnBcThucDon";
+            this.btnBcThucDon.Padding = new System.Windows.Forms.Padding(32, 0, 0, 0);
+            this.btnBcThucDon.Size = new System.Drawing.Size(240, 40);
+            this.btnBcThucDon.TabIndex = 21;
+            this.btnBcThucDon.Text = "Báo cáo thực đơn";
+            this.btnBcThucDon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBcThucDon.UseVisualStyleBackColor = false;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -478,10 +529,13 @@
         private System.Windows.Forms.Button btnLapThucDon;
         private System.Windows.Forms.Button btnTimKiemMonAn;
         private System.Windows.Forms.Button btnTimKiemDauBep;
-        private System.Windows.Forms.Button btnBaoCaoDoanhThu;
+        private System.Windows.Forms.Button btnBcDoanhThu;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lblGio;
         private System.Windows.Forms.Label lblTieuDe;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnBcMonAn;
+        private System.Windows.Forms.Button btnBcMonTheoBep;
+        private System.Windows.Forms.Button btnBcThucDon;
     }
 }

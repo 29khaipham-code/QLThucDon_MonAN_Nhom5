@@ -37,11 +37,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.105.1.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.105.1\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.3\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.Cryptography, Version=10.0.0.13, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Cryptography.10.0.13\lib\net462\Microsoft.Bcl.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.TimeProvider, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.TimeProvider.8.0.1\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
@@ -90,6 +108,12 @@
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=8.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.8.16.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c77e27b81f4d0187, processorArchitecture=MSIL">
+      <HintPath>..\packages\RBush.Signed.4.0.0\lib\net47\RBush.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
@@ -164,6 +188,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\BaoCaoBLL.cs" />
@@ -199,6 +224,37 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\BaoCao\BaoCaoHelper.cs" />
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.Designer.cs">
+      <DependentUpon>frmBaoCaoDoanhThu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoMonAn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoMonAn.Designer.cs">
+      <DependentUpon>frmBaoCaoMonAn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoMonTheoDauBep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoMonTheoDauBep.Designer.cs">
+      <DependentUpon>frmBaoCaoMonTheoDauBep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.Designer.cs">
+      <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoXxx.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoXxx.Designer.cs">
+      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\DanhMuc\frmDanhMuc.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -211,10 +267,18 @@
     <Compile Include="GUI\Forms\DanhMuc\frmDauBep.Designer.cs">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmMonAn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmMonAn.Designer.cs">
+      <DependentUpon>frmMonAn.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\NghiepVu\frmThucDon.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.Designer.cs" />
+    <Compile Include="GUI\Forms\NghiepVu\frmThucDon.Designer.cs">
+      <DependentUpon>frmThucDon.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\TimKiem\frmTimKiemDauBep.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,13 +300,33 @@
     <Compile Include="GUI\Program.cs" />
     <Compile Include="GUI\Ui.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.resx">
+      <DependentUpon>frmBaoCaoDoanhThu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoMonAn.resx">
+      <DependentUpon>frmBaoCaoMonAn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoMonTheoDauBep.resx">
+      <DependentUpon>frmBaoCaoMonTheoDauBep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.resx">
+      <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoXxx.resx">
+      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDanhMuc.resx">
       <DependentUpon>frmDanhMuc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDauBep.resx">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx" />
+    <EmbeddedResource Include="GUI\Forms\DanhMuc\frmMonAn.resx">
+      <DependentUpon>frmMonAn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx">
+      <DependentUpon>frmThucDon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\TimKiem\frmTimKiemDauBep.resx">
       <DependentUpon>frmTimKiemDauBep.cs</DependentUpon>
     </EmbeddedResource>
@@ -278,7 +362,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="GUI\Forms\BaoCao\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />

@@ -15,7 +15,7 @@ using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu;
-
+using QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao;
 
 
 namespace QLThucDon_MonAN_Nhom5.GUI
@@ -89,16 +89,16 @@ namespace QLThucDon_MonAN_Nhom5.GUI
             _dsForm["btnXepLoai"] = () => new frmDanhMuc(LoaiDanhMuc.XepLoai);
 
             // _dsForm["btnNguyenLieu"]     = () => new frmNguyenLieu();
-            // _dsForm["btnMonAn"]          = () => new frmMonAn();
-             _dsForm["btnDauBep"]         = () => new frmDauBep();
+            _dsForm["btnMonAn"] = () => new frmMonAn();
+            _dsForm["btnDauBep"]         = () => new frmDauBep();
             // _dsForm["btnKhachHang"]      = () => new frmKhachHang();
             _dsForm["btnLapThucDon"] = () => new frmThucDon();
             _dsForm["btnTimKiemMonAn"]       = () => new frmTimKiemMonAn();
              _dsForm["btnTimKiemDauBep"]      = () => new frmTimKiemDauBep();
-            // _dsForm["btnBcDoanhThu"]     = () => new frmBaoCaoDoanhThu();
-            // _dsForm["btnBcMonAn"]        = () => new frmBaoCaoMonAn();
-            // _dsForm["btnBcMonTheoBep"]   = () => new frmBaoCaoMonTheoDauBep();
-            // _dsForm["btnBcThucDon"]      = () => new frmBaoCaoThucDon();
+            _dsForm["btnBcDoanhThu"] = () => new frmBaoCaoDoanhThu();
+            _dsForm["btnBcMonAn"] = () => new frmBaoCaoMonAn();
+            _dsForm["btnBcMonTheoBep"] = () => new frmBaoCaoMonTheoDauBep();
+            _dsForm["btnBcThucDon"] = () => new frmBaoCaoThucDon();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
