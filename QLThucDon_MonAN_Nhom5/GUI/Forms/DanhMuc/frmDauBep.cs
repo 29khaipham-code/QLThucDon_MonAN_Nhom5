@@ -171,7 +171,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             var d = dataGridView2.CurrentRow.DataBoundItem as DauBepDTO;
             if (d == null) return;
             textBox1.Text = d.MaDauBep; textBox2.Text = d.TenDauBep ?? "";
-            textBox3.Text = d.DiaChi ?? ""; textBox4.Text = d.DienThoai ?? "";
+            textBox4.Text = d.DiaChi ?? ""; textBox3.Text = d.DienThoai ?? "";
             radioButton1.Checked = string.Equals(d.GioiTinh, "Nam", StringComparison.OrdinalIgnoreCase);
             radioButton2.Checked = !radioButton1.Checked;
             ChonGiaTri(comboBox1, d.MaTrinhDo); ChonGiaTri(comboBox2, d.MaNoiHoc);
