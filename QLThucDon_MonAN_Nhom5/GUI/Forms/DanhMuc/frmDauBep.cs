@@ -319,8 +319,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 var d = new DauBepDTO {
                     MaDauBep = textBox1.Text.Trim(), TenDauBep = textBox2.Text.Trim(),
                     GioiTinh = radioButton2.Checked ? "Nữ" : "Nam",
-                    DiaChi = string.IsNullOrWhiteSpace(textBox3.Text) ? null : textBox3.Text.Trim(),
-                    DienThoai = string.IsNullOrWhiteSpace(textBox4.Text) ? null : textBox4.Text.Trim(),
+                    DiaChi = string.IsNullOrWhiteSpace(textBox4.Text) ? null : textBox4.Text.Trim(),
+                    DienThoai = string.IsNullOrWhiteSpace(textBox3.Text) ? null : textBox3.Text.Trim(),
                     MaTrinhDo = Convert.ToString(comboBox1.SelectedValue),
                     MaNoiHoc = comboBox2.SelectedValue == null ? null : Convert.ToString(comboBox2.SelectedValue)
                 };
