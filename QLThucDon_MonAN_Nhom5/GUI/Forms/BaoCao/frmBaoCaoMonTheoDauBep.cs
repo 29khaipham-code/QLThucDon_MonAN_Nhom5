@@ -10,14 +10,6 @@ using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
 {
-    /// <summary>
-    /// Báo cáo danh sách món ăn của từng đầu bếp (yêu cầu 7). Lọc theo một đầu bếp hoặc xem tất cả.
-    ///
-    /// Control cần có trong Designer (đặt đúng tên):
-    ///   lblLoc (Label)   cmbLoc (ComboBox)   btnXem, btnXuat, btnIn (Button)
-    ///   lblTieuDeBC (Label)   dgv (DataGridView)   lblSoDong (Label)
-    /// Mọi sự kiện được gắn bằng code trong constructor, KHÔNG bấm đúp control trong Designer.
-    /// </summary>
     public partial class frmBaoCaoMonTheoDauBep : Form
     {
         private readonly BaoCaoBLL _bll = new BaoCaoBLL();

@@ -218,12 +218,6 @@
     <Compile Include="DTO\NguyenLieuDTO.cs" />
     <Compile Include="DTO\NguyenLieuMonAnDTO.cs" />
     <Compile Include="DTO\ThucDonDTO.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Forms\BaoCao\BaoCaoHelper.cs" />
     <Compile Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.cs">
       <SubType>Form</SubType>
