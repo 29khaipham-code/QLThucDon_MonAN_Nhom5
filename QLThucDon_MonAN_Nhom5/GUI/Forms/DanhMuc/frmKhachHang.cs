@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
+using System.Drawing;
+using QLThucDon_MonAN_Nhom5.GUI;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 {
@@ -13,6 +15,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         public frmKhachHang()
         {
             InitializeComponent();
+            ApDungGiaoDien();
         }
 
         private void frmKhachHang_Load(object sender, EventArgs e)
@@ -148,6 +151,114 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 txtDienThoai.Text = row.Cells["DienThoai"].Value?.ToString();
                 txtMaSoThue.Text = row.Cells["MaSoThue"].Value?.ToString();
             }
+        }
+        private void ApDungGiaoDien()
+        {
+            // ==================== 1. FORM ====================
+            BackColor = Ui.Back;
+            ForeColor = Ui.Text;
+            Font = new Font("Segoe UI", 9F);
+
+            // ==================== 2. CÁC Ô NHẬP LIỆU ====================
+            TextBox[] dsTextBox =
+            {
+        txtMaKH,
+        txtTenKH,
+        txtDiaChi,
+        txtDienThoai,
+        txtMaSoThue
+    };
+
+            foreach (TextBox txt in dsTextBox)
+            {
+                txt.BackColor = Ui.Surface;
+                txt.ForeColor = Ui.Text;
+                txt.Font = new Font("Segoe UI", 9F);
+                txt.BorderStyle = BorderStyle.FixedSingle;
+            }
+
+            // Mã khách hàng được tự động sinh, không cho sửa trực tiếp
+            txtMaKH.ReadOnly = true;
+            txtMaKH.BackColor = Ui.Header;
+
+            // ==================== 3. CÁC NÚT CHỨC NĂNG ====================
+            Button[] dsNut =
+            {
+        btnThem,
+        btnSua,
+        btnXoa,
+        btnLuu,
+        btnBoQua
+    };
+
+            foreach (Button b in dsNut)
+            {
+                b.UseVisualStyleBackColor = false;
+                b.FlatStyle = FlatStyle.Flat;
+
+                b.FlatAppearance.BorderSize = 1;
+                b.FlatAppearance.BorderColor = Ui.Border;
+
+                b.BackColor = Ui.Surface;
+                b.ForeColor = Ui.Dark;
+                b.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+
+                b.FlatAppearance.MouseOverBackColor = Ui.Hover;
+                b.FlatAppearance.MouseDownBackColor = Ui.Header;
+
+                b.Cursor = Cursors.Hand;
+            }
+
+            // Nút Lưu sử dụng màu Teal để nhấn mạnh
+            btnLuu.BackColor = Ui.Accent;
+            btnLuu.ForeColor = Color.White;
+            btnLuu.FlatAppearance.BorderColor = Ui.Accent;
+            btnLuu.FlatAppearance.MouseOverBackColor = Ui.Dark;
+            btnLuu.FlatAppearance.MouseDownBackColor = Ui.Dark;
+
+            // ==================== 4. BẢNG KHÁCH HÀNG ====================
+            dgvKhachHang.EnableHeadersVisualStyles = false;
+            dgvKhachHang.BackgroundColor = Ui.Surface;
+            dgvKhachHang.BorderStyle = BorderStyle.None;
+            dgvKhachHang.GridColor = Ui.Border;
+
+            dgvKhachHang.ReadOnly = true;
+            dgvKhachHang.AllowUserToAddRows = false;
+            dgvKhachHang.AllowUserToDeleteRows = false;
+            dgvKhachHang.AllowUserToResizeRows = false;
+
+            dgvKhachHang.MultiSelect = false;
+            dgvKhachHang.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+            dgvKhachHang.RowHeadersVisible = false;
+
+            // Tiêu đề cột
+            dgvKhachHang.ColumnHeadersDefaultCellStyle.BackColor = Ui.Header;
+            dgvKhachHang.ColumnHeadersDefaultCellStyle.ForeColor = Ui.Dark;
+            dgvKhachHang.ColumnHeadersDefaultCellStyle.SelectionBackColor = Ui.Header;
+            dgvKhachHang.ColumnHeadersDefaultCellStyle.SelectionForeColor = Ui.Dark;
+            dgvKhachHang.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 9F, FontStyle.Bold);
+
+            dgvKhachHang.ColumnHeadersHeight = 38;
+            dgvKhachHang.ColumnHeadersHeightSizeMode =
+                DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+
+            // Nội dung ô
+            dgvKhachHang.DefaultCellStyle.BackColor = Ui.Surface;
+            dgvKhachHang.DefaultCellStyle.ForeColor = Ui.Text;
+            dgvKhachHang.DefaultCellStyle.SelectionBackColor = Ui.Accent;
+            dgvKhachHang.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvKhachHang.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            dgvKhachHang.DefaultCellStyle.Padding = new Padding(5, 2, 5, 2);
+
+            // Hàng xen kẽ
+            dgvKhachHang.AlternatingRowsDefaultCellStyle.BackColor = Ui.Back;
+            dgvKhachHang.AlternatingRowsDefaultCellStyle.ForeColor = Ui.Text;
+            dgvKhachHang.AlternatingRowsDefaultCellStyle.SelectionBackColor = Ui.Accent;
+            dgvKhachHang.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvKhachHang.RowTemplate.Height = 32;
         }
     }
 }
