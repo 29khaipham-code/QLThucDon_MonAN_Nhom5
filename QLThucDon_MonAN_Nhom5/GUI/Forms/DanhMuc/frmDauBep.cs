@@ -171,7 +171,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             var d = dataGridView2.CurrentRow.DataBoundItem as DauBepDTO;
             if (d == null) return;
             textBox1.Text = d.MaDauBep; textBox2.Text = d.TenDauBep ?? "";
-            textBox3.Text = d.DiaChi ?? ""; textBox4.Text = d.DienThoai ?? "";
+            textBox4.Text = d.DiaChi ?? ""; textBox3.Text = d.DienThoai ?? "";
             radioButton1.Checked = string.Equals(d.GioiTinh, "Nam", StringComparison.OrdinalIgnoreCase);
             radioButton2.Checked = !radioButton1.Checked;
             ChonGiaTri(comboBox1, d.MaTrinhDo); ChonGiaTri(comboBox2, d.MaNoiHoc);
@@ -319,8 +319,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 var d = new DauBepDTO {
                     MaDauBep = textBox1.Text.Trim(), TenDauBep = textBox2.Text.Trim(),
                     GioiTinh = radioButton2.Checked ? "Nữ" : "Nam",
-                    DiaChi = string.IsNullOrWhiteSpace(textBox3.Text) ? null : textBox3.Text.Trim(),
-                    DienThoai = string.IsNullOrWhiteSpace(textBox4.Text) ? null : textBox4.Text.Trim(),
+                    DiaChi = string.IsNullOrWhiteSpace(textBox4.Text) ? null : textBox4.Text.Trim(),
+                    DienThoai = string.IsNullOrWhiteSpace(textBox3.Text) ? null : textBox3.Text.Trim(),
                     MaTrinhDo = Convert.ToString(comboBox1.SelectedValue),
                     MaNoiHoc = comboBox2.SelectedValue == null ? null : Convert.ToString(comboBox2.SelectedValue)
                 };

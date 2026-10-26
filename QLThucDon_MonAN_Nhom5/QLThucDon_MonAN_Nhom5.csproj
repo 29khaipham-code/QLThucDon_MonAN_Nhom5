@@ -261,11 +261,23 @@
     <Compile Include="GUI\Forms\DanhMuc\frmDauBep.Designer.cs">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmKhachHang.Designer.cs">
+      <DependentUpon>frmKhachHang.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Forms\DanhMuc\frmMonAn.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Forms\DanhMuc\frmMonAn.Designer.cs">
       <DependentUpon>frmMonAn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmNguyenLieu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\DanhMuc\frmNguyenLieu.Designer.cs">
+      <DependentUpon>frmNguyenLieu.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Forms\NghiepVu\frmThucDon.cs">
       <SubType>Form</SubType>
@@ -315,8 +327,14 @@
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDauBep.resx">
       <DependentUpon>frmDauBep.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\DanhMuc\frmKhachHang.resx">
+      <DependentUpon>frmKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmMonAn.resx">
       <DependentUpon>frmMonAn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\DanhMuc\frmNguyenLieu.resx">
+      <DependentUpon>frmNguyenLieu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\NghiepVu\frmThucDon.resx">
       <DependentUpon>frmThucDon.cs</DependentUpon>
