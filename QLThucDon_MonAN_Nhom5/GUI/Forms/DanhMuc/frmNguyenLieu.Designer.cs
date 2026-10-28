@@ -82,7 +82,7 @@
             // cmbDonViTinh
             // 
             this.cmbDonViTinh.FormattingEnabled = true;
-            this.cmbDonViTinh.Location = new System.Drawing.Point(369, 34);
+            this.cmbDonViTinh.Location = new System.Drawing.Point(369, 83);
             this.cmbDonViTinh.Name = "cmbDonViTinh";
             this.cmbDonViTinh.Size = new System.Drawing.Size(121, 21);
             this.cmbDonViTinh.TabIndex = 4;
@@ -90,7 +90,7 @@
             // cmbCongDung
             // 
             this.cmbCongDung.FormattingEnabled = true;
-            this.cmbCongDung.Location = new System.Drawing.Point(369, 79);
+            this.cmbCongDung.Location = new System.Drawing.Point(369, 35);
             this.cmbCongDung.Name = "cmbCongDung";
             this.cmbCongDung.Size = new System.Drawing.Size(121, 21);
             this.cmbCongDung.TabIndex = 5;
