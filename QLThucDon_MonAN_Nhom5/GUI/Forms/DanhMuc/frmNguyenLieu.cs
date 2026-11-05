@@ -79,17 +79,28 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void dgvNguyenLieu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && !_isAdding)
-            {
-                DataGridViewRow row = dgvNguyenLieu.Rows[e.RowIndex];
-                txtMaNL.Text = row.Cells["MaNguyenLieu"].Value?.ToString();
-                txtTenNL.Text = row.Cells["TenNguyenLieu"].Value?.ToString();
-                txtDonGia.Text = row.Cells["DonGia"].Value?.ToString();
-                txtDinhDuong.Text = row.Cells["DinhDuong"].Value?.ToString();
+            if (e.RowIndex < 0 || _isAdding)
+                return;
 
-                cmbDonViTinh.SelectedValue = row.Cells["MaDonViTinh"].Value?.ToString();
-                cmbCongDung.SelectedValue = row.Cells["MaCongDung"].Value?.ToString();
-            }
+            DataGridViewRow row = dgvNguyenLieu.Rows[e.RowIndex];
+
+            txtMaNL.Text = Convert.ToString(row.Cells["MaNguyenLieu"].Value);
+            txtTenNL.Text = Convert.ToString(row.Cells["TenNguyenLieu"].Value);
+            txtDonGia.Text = Convert.ToString(row.Cells["DonGia"].Value);
+            txtDinhDuong.Text = Convert.ToString(row.Cells["DinhDuong"].Value);
+
+            object maDVT = row.Cells["MaDonViTinh"].Value;
+            object maCD = row.Cells["MaCongDung"].Value;
+
+            if (maDVT != null && maDVT != DBNull.Value)
+                cmbDonViTinh.SelectedValue = maDVT;
+            else
+                cmbDonViTinh.SelectedIndex = -1;
+
+            if (maCD != null && maCD != DBNull.Value)
+                cmbCongDung.SelectedValue = maCD;
+            else
+                cmbCongDung.SelectedIndex = -1;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -116,15 +127,39 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaNL.Text)) return;
+            if (string.IsNullOrEmpty(txtMaNL.Text))
+            {
+                MessageBox.Show("Vui lòng chọn nguyên liệu cần xóa!");
+                return;
+            }
 
-            if (MessageBox.Show("Xóa nguyên liệu này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Xóa nguyên liệu này?", "Xác nhận",
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 try
                 {
                     _nguyenLieuDAL.Delete(txtMaNL.Text);
+
+                    MessageBox.Show("Xóa nguyên liệu thành công!");
+
                     LoadData();
                     ClearInputs();
+                }
+                catch (Microsoft.Data.SqlClient.SqlException ex)
+                {
+                    if (ex.Number == 50001)
+                    {
+                        MessageBox.Show(
+                            "Nguyên liệu đang được sử dụng trong món ăn, không thể xóa!",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                    }
+                    else
+                    {
+                        MessageBox.Show("Lỗi xóa dữ liệu: " + ex.Message);
+                    }
                 }
                 catch (Exception ex)
                 {

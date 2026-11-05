@@ -55,7 +55,24 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             DbHelper.P("@Ma", n.MaNguyenLieu), DbHelper.P("@Ten", n.TenNguyenLieu), DbHelper.P("@DVT", n.MaDonViTinh),
             DbHelper.P("@CD", DbHelper.NullIfEmpty(n.MaCongDung)), DbHelper.P("@Gia", n.DonGia), DbHelper.P("@DD", n.DinhDuong));
 
+        //public int Delete(string ma) =>
+        //    DbHelper.ExecuteNonQuery("DELETE FROM NguyenLieu WHERE MaNguyenLieu=@Ma", DbHelper.P("@Ma", ma));
         public int Delete(string ma) =>
-            DbHelper.ExecuteNonQuery("DELETE FROM NguyenLieu WHERE MaNguyenLieu=@Ma", DbHelper.P("@Ma", ma));
+    DbHelper.ExecuteNonQuery(
+        @"
+        IF EXISTS (
+            SELECT 1
+            FROM NguyenLieu_MonAn
+            WHERE MaNguyenLieu = @Ma
+        )
+        BEGIN
+            THROW 50001, N'Nguyên liệu đang được sử dụng trong món ăn, không thể xóa!', 1;
+        END
+
+        DELETE FROM NguyenLieu
+        WHERE MaNguyenLieu = @Ma;
+        ",
+        DbHelper.P("@Ma", ma)
+    );
     }
 }
