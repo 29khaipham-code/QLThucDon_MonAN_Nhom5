@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
@@ -26,6 +27,8 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             GiamGia = r.Dec("GiamGia"),
             TongTien = r.Dec("TongTien")
         };
+
+        public DataTable GetLoaiMon() => DbHelper.ExecuteDataTable("SELECT MaLoai, TenLoai FROM LoaiMon ORDER BY TenLoai");
 
         public List<ThucDonDTO> GetAll() =>
             DbHelper.ExecuteList<ThucDonDTO>(SelectBase + " ORDER BY td.NgayDung DESC, td.SoThucDon DESC", Map);

@@ -3,6 +3,7 @@ using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,17 @@ namespace QLThucDon_MonAN_Nhom5.BLL
     {
         private readonly ThucDonDAL _dal = new ThucDonDAL();
         private readonly DauBepDAL _dauBepDal = new DauBepDAL();
+        private readonly MonAnDAL _monAnDal = new MonAnDAL();
+        private readonly KhachHangDAL _khachHangDal = new KhachHangDAL();
+
+        public List<KhachHangDTO> LayKhachHang() => DbGuard.Run(() => _khachHangDal.GetAll());
+        public List<DauBepDTO> LayDauBep() => DbGuard.Run(() => _dauBepDal.GetAll());
+        public DataTable LayLoaiMon() => DbGuard.Run(() => _dal.GetLoaiMon());
+        public List<MonAnDTO> LayMonTheoLoaiVaDauBep(string maLoai, string maDauBep)
+        {
+            if (string.IsNullOrWhiteSpace(maLoai) || string.IsNullOrWhiteSpace(maDauBep)) return new List<MonAnDTO>();
+            return DbGuard.Run(() => _monAnDal.GetByLoaiVaDauBep(maLoai, maDauBep));
+        }
 
         public List<ThucDonDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public ThucDonDTO LayTheoSo(string so) => DbGuard.Run(() => _dal.GetById(so));
