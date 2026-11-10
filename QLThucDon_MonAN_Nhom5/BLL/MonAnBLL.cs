@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 using System.Threading.Tasks;
 using QLThucDon_MonAN_Nhom5.DTO;
 using QLThucDon_MonAN_Nhom5.DAL;
@@ -11,6 +12,10 @@ namespace QLThucDon_MonAN_Nhom5.BLL
     public class MonAnBLL
     {
         private  readonly MonAnDAL _dal = new MonAnDAL();
+
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
+        public DataTable LayLoaiMon() => DbGuard.Run(() => _dal.GetLoaiMon());
+        public DataTable LayCongDung() => DbGuard.Run(() => _dal.GetCongDung());
 
         public List<MonAnDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());// dua nghiep vu vao Dbguard 
         public MonAnDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
