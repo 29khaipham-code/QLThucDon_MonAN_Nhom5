@@ -12,6 +12,8 @@ namespace QLThucDon_MonAN_Nhom5.BLL
     {
         private readonly KhachHangDAL _dal = new KhachHangDAL();
 
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
+
         public List<KhachHangDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public KhachHangDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
         public List<KhachHangDTO> TimKiem(string ten) => DbGuard.Run(() => _dal.TimKiem(ten));

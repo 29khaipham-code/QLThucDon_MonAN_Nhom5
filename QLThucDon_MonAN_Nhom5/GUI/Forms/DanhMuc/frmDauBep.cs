@@ -15,7 +15,6 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
     public partial class frmDauBep : Form
     {
         private readonly DauBepBLL _bll = new DauBepBLL();
-        private readonly DauBepDAL _dal = new DauBepDAL();
         private bool _dangThem;
 
         public frmDauBep()
