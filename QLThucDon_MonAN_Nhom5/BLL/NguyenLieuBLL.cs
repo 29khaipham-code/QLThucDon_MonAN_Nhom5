@@ -12,6 +12,8 @@ namespace QLThucDon_MonAN_Nhom5.BLL
     {
         private readonly NguyenLieuDAL _dal = new NguyenLieuDAL();
 
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
+
         public List<NguyenLieuDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public NguyenLieuDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
 

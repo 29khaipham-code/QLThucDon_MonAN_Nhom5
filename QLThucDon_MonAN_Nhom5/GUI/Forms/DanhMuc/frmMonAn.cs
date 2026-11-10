@@ -892,21 +892,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
             try
             {
-                // Xóa nguyên liệu liên quan và món ăn trong một transaction
-                DbHelper.RunInTransaction((c, t) =>
-                {
-                    DbHelper.ExecuteNonQuery(
-                        c,
-                        t,
-                        "DELETE FROM NguyenLieu_MonAn WHERE MaMonAn=@Ma",
-                        DbHelper.P("@Ma", m.MaMonAn));
-
-                    DbHelper.ExecuteNonQuery(
-                        c,
-                        t,
-                        "DELETE FROM MonAn WHERE MaMonAn=@Ma",
-                        DbHelper.P("@Ma", m.MaMonAn));
-                });
+                monAnBLL.Xoa(m.MaMonAn);
 
                 MessageBox.Show(
                     "Đã xoá món ăn!",
