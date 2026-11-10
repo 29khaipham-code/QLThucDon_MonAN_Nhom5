@@ -465,7 +465,7 @@
             this.lblGio.Name = "lblGio";
             this.lblGio.Size = new System.Drawing.Size(260, 60);
             this.lblGio.TabIndex = 1;
-            this.lblGio.Text = "label3";
+            this.lblGio.Text = "Thời gian";
             this.lblGio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTieuDe
@@ -477,7 +477,7 @@
             this.lblTieuDe.Name = "lblTieuDe";
             this.lblTieuDe.Size = new System.Drawing.Size(227, 60);
             this.lblTieuDe.TabIndex = 0;
-            this.lblTieuDe.Text = "Tieu de";
+            this.lblTieuDe.Text = "Tiêu đề";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timer1
