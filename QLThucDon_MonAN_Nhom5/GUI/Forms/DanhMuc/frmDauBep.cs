@@ -140,13 +140,13 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void NapDanhMuc()
         {
-            comboBox1.DataSource = DbHelper.ExecuteDataTable("SELECT MaTrinhDo, TenTrinhDo FROM TrinhDo ORDER BY TenTrinhDo");
+            comboBox1.DataSource = _bll.LayTrinhDo();
             comboBox1.DisplayMember = "TenTrinhDo"; comboBox1.ValueMember = "MaTrinhDo";
-            comboBox2.DataSource = DbHelper.ExecuteDataTable("SELECT MaNoiHoc, TenNoiHoc FROM NoiHoc ORDER BY TenNoiHoc");
+            comboBox2.DataSource = _bll.LayNoiHoc();
             comboBox2.DisplayMember = "TenNoiHoc"; comboBox2.ValueMember = "MaNoiHoc";
-            comboBox3.DataSource = DbHelper.ExecuteDataTable("SELECT MaMonAn, TenMonAn FROM MonAn ORDER BY TenMonAn");
+            comboBox3.DataSource = _bll.LayDanhSachMonAn();
             comboBox3.DisplayMember = "TenMonAn"; comboBox3.ValueMember = "MaMonAn";
-            comboBox4.DataSource = DbHelper.ExecuteDataTable("SELECT MaXepLoai, TenXepLoai FROM XepLoai ORDER BY TenXepLoai");
+            comboBox4.DataSource = _bll.LayXepLoai();
             comboBox4.DisplayMember = "TenXepLoai"; comboBox4.ValueMember = "MaXepLoai";
             comboBox1.DropDownStyle = comboBox2.DropDownStyle = comboBox3.DropDownStyle = comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
         }
@@ -187,7 +187,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void NapMonAnDaChon(string ma)
         {
-            var list = _dal.GetMonAn(ma);
+            var list = _bll.LayMonLamDuoc(ma);
             var dt = new DataTable();
             dt.Columns.Add("MaMonAn"); dt.Columns.Add("TenMonAn");
             dt.Columns.Add("MaXepLoai"); dt.Columns.Add("TenXepLoai");
@@ -285,9 +285,11 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             {
                 _dangThem = true;
                 XoaForm();
-                textBox1.Text = _dal.NextCode();
+                textBox1.Text = _bll.TaoMaMoi();
                 textBox1.ReadOnly = true;
                 button6.Enabled = true;
+                button1.Enabled = true;
+                button2.Enabled = true;
                 textBox2.Focus();
             }
             catch (Exception ex) { _dangThem = false; BaoLoi("Không tạo được mã đầu bếp mới. Kiểm tra kết nối database.", ex); }
@@ -296,14 +298,14 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         private void button4_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text)) { MessageBox.Show("Chọn đầu bếp cần sửa."); return; }
-            _dangThem = false; textBox1.ReadOnly = true; button6.Enabled = true;
+            _dangThem = false; textBox1.ReadOnly = true; button6.Enabled = true; button1.Enabled = true; button2.Enabled = true;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBox1.Text)) { MessageBox.Show("Chọn đầu bếp cần xóa."); return; }
             if (MessageBox.Show("Bạn chắc chắn muốn xóa đầu bếp này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            try { _dal.Delete(textBox1.Text.Trim()); NapDanhSach(); XoaForm(); }
+            try { _bll.Xoa(textBox1.Text.Trim()); NapDanhSach(); XoaForm(); }
             catch (Exception ex) { BaoLoi("Không thể xóa. Đầu bếp có thể đang được dùng trong thực đơn.", ex); }
         }
 
@@ -311,23 +313,27 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         {
             try
             {
-                if(ValidateDiaChi(textBox4.Text) == false) { return; }
+                if (ValidateDiaChi(textBox4.Text) == false) { return; }
                 if (ValidateHoTen(textBox2.Text) == false) { return; }
-                if (ValidateSoDienThoai(textBox3.Text) == false) {return; }
+                if (ValidateSoDienThoai(textBox3.Text) == false) { return; }
                 if (string.IsNullOrWhiteSpace(textBox2.Text)) { MessageBox.Show("Tên đầu bếp không được để trống."); textBox2.Focus(); return; }
                 if (comboBox1.SelectedValue == null) { MessageBox.Show("Database chưa có danh mục trình độ."); return; }
-                var d = new DauBepDTO {
-                    MaDauBep = textBox1.Text.Trim(), TenDauBep = textBox2.Text.Trim(),
+                var d = new DauBepDTO
+                {
+                    MaDauBep = textBox1.Text.Trim(),
+                    TenDauBep = textBox2.Text.Trim(),
                     GioiTinh = radioButton2.Checked ? "Nữ" : "Nam",
                     DiaChi = string.IsNullOrWhiteSpace(textBox4.Text) ? null : textBox4.Text.Trim(),
                     DienThoai = string.IsNullOrWhiteSpace(textBox3.Text) ? null : textBox3.Text.Trim(),
                     MaTrinhDo = Convert.ToString(comboBox1.SelectedValue),
                     MaNoiHoc = comboBox2.SelectedValue == null ? null : Convert.ToString(comboBox2.SelectedValue)
                 };
-                if (_dangThem) _dal.Insert(d, LayMonAnTrenGrid()); else _dal.Update(d, LayMonAnTrenGrid());
+                if (_dangThem) _bll.Them(d, LayMonAnTrenGrid()); else _bll.Sua(d, LayMonAnTrenGrid());
                 NapDanhSach(); ChonDong(d.MaDauBep); MessageBox.Show("Lưu thông tin đầu bếp thành công.");
                 _dangThem = false; textBox1.ReadOnly = true;
                 button6.Enabled = false;
+                button1.Enabled = false;
+                button2.Enabled = false;
             }
             catch (Exception ex) { BaoLoi("Lưu không thành công. Kiểm tra dữ liệu và các danh mục liên quan.", ex); }
         }
@@ -349,7 +355,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void CheDoXem()
         {
-            textBox1.ReadOnly = true; button6.Enabled = false;
+            textBox1.ReadOnly = true; button6.Enabled = false; button1.Enabled = false;
+            button2.Enabled = false;
         }
 
         private static void BaoLoi(string noiDung, Exception ex)

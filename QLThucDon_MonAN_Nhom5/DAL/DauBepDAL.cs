@@ -1,6 +1,7 @@
 ﻿using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,13 @@ namespace QLThucDon_MonAN_Nhom5.DAL
 
         public List<DauBepDTO> GetAll() =>
             DbHelper.ExecuteList<DauBepDTO>(SelectBase + " ORDER BY d.MaDauBep", Map);
+
+
+
+        public DataTable GetTrinhDo() => DbHelper.ExecuteDataTable("SELECT MaTrinhDo, TenTrinhDo FROM TrinhDo ORDER BY TenTrinhDo");
+        public DataTable GetNoiHoc() => DbHelper.ExecuteDataTable("SELECT MaNoiHoc, TenNoiHoc FROM NoiHoc ORDER BY TenNoiHoc");
+        public DataTable GetDanhSachMonAn() => DbHelper.ExecuteDataTable("SELECT MaMonAn, TenMonAn FROM MonAn ORDER BY TenMonAn");
+        public DataTable GetXepLoai() => DbHelper.ExecuteDataTable("SELECT MaXepLoai, TenXepLoai FROM XepLoai ORDER BY TenXepLoai");
 
         public DauBepDTO GetById(string ma) =>
             DbHelper.ExecuteList<DauBepDTO>(SelectBase + " WHERE d.MaDauBep=@Ma", Map, DbHelper.P("@Ma", ma)).FirstOrDefault();

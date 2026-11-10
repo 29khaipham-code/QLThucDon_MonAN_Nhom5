@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using QLThucDon_MonAN_Nhom5.DAL;
@@ -11,6 +12,14 @@ namespace QLThucDon_MonAN_Nhom5.BLL
     public class DauBepBLL
     {
         private readonly DauBepDAL _dal = new DauBepDAL();
+
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
+        public DataTable LayTrinhDo() => DbGuard.Run(() => _dal.GetTrinhDo());
+        public DataTable LayNoiHoc() => DbGuard.Run(() => _dal.GetNoiHoc());
+        public DataTable LayDanhSachMonAn() => DbGuard.Run(() => _dal.GetDanhSachMonAn());
+        public DataTable LayXepLoai() => DbGuard.Run(() => _dal.GetXepLoai());
+
+
 
         public List<DauBepDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public DauBepDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
