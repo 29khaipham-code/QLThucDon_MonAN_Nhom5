@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
     //Các truy vấn báo cáo trả về DataTable để gắn thẳng vào DataGridView / RDLC
-    public class BaoCaoDAL
+    public class BaoCaoDAL : IBaoCaoDAL
     {
 
             // ---------- Yêu cầu 5: doanh thu từng đầu bếp theo tháng / quý / năm ----------

@@ -1,14 +1,11 @@
-﻿using QLThucDon_MonAN_Nhom5.DTO;
-using System;
+﻿using Microsoft.Data.SqlClient;
+using QLThucDon_MonAN_Nhom5.DTO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class DauBepDAL
+    public class DauBepDAL : BaseDAL<DauBepDTO>, IDauBepDAL
     {
         private const string SelectBase = @"
             SELECT d.MaDauBep, d.TenDauBep, d.GioiTinh, d.DiaChi, d.DienThoai,
@@ -17,7 +14,14 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             JOIN TrinhDo td ON td.MaTrinhDo = d.MaTrinhDo
             LEFT JOIN NoiHoc nh ON nh.MaNoiHoc = d.MaNoiHoc";
 
-        private static DauBepDTO Map(SqlDataReader r) => new DauBepDTO
+        protected override string TableName => "DauBep";
+        protected override string KeyColumn => "MaDauBep";
+        protected override string KeyColumnInSelect => "d.MaDauBep";
+        protected override string CodePrefix => "DB";
+        protected override string SelectSql => SelectBase;
+        protected override string OrderBySql => "d.MaDauBep";
+
+        protected override DauBepDTO Map(SqlDataReader r) => new DauBepDTO
         {
             MaDauBep = r.Str("MaDauBep"),
             TenDauBep = r.Str("TenDauBep"),
@@ -30,13 +34,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             TenNoiHoc = r.Str("TenNoiHoc")
         };
 
-        public List<DauBepDTO> GetAll() =>
-            DbHelper.ExecuteList<DauBepDTO>(SelectBase + " ORDER BY d.MaDauBep", Map);
-
-        public DauBepDTO GetById(string ma) =>
-            DbHelper.ExecuteList<DauBepDTO>(SelectBase + " WHERE d.MaDauBep=@Ma", Map, DbHelper.P("@Ma", ma)).FirstOrDefault();
-
-        //Các món một đầu bếp làm được (gọi riêng, không nhúng trong DauBepDTO)
         public List<DauBepMonAnDTO> GetMonAn(string maDauBep) =>
             DbHelper.ExecuteList<DauBepMonAnDTO>(@"
                 SELECT x.MaDauBep, x.MaMonAn, m.TenMonAn, x.MaXepLoai, xl.TenXepLoai
@@ -53,9 +50,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     TenXepLoai = r.Str("TenXepLoai")
                 }, DbHelper.P("@Ma", maDauBep));
 
-        public string NextCode() => DbHelper.NextCode("DauBep", "MaDauBep", "DB", 3);
-
-        // ---------- Yêu cầu 4: tìm đầu bếp theo tên, nơi học, món làm được ----------
         public List<DauBepDTO> TimKiem(string ten, string maNoiHoc, string maMonAn) =>
             DbHelper.ExecuteList<DauBepDTO>(@"
                 SELECT DISTINCT d.MaDauBep, d.TenDauBep, d.GioiTinh, d.DiaChi, d.DienThoai,
@@ -72,7 +66,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 DbHelper.P("@NH", DbHelper.NullIfEmpty(maNoiHoc)),
                 DbHelper.P("@Mon", DbHelper.NullIfEmpty(maMonAn)));
 
-        // ---------- CRUD ----------
         public void Insert(DauBepDTO d, List<DauBepMonAnDTO> monAn) => DbHelper.RunInTransaction((c, t) =>
         {
             DbHelper.ExecuteNonQuery(c, t,
@@ -82,7 +75,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 UpsertMonAn(c, t, d.MaDauBep, x);
         });
 
-        //Đồng bộ danh sách món trong cùng transaction. Không xoá-rồi-thêm lại, vì ChiTietThucDon có FK tới DauBep_MonAn.</summary>
+        // Đồng bộ danh sách món trong cùng transaction; không xoá-rồi-thêm lại vì ChiTietThucDon có FK tới DauBep_MonAn.
         public void Update(DauBepDTO d, List<DauBepMonAnDTO> monAn) => DbHelper.RunInTransaction((c, t) =>
         {
             DbHelper.ExecuteNonQuery(c, t,
@@ -100,7 +93,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 UpsertMonAn(c, t, d.MaDauBep, x);
         });
 
-        //SqlException.Number = 547 nếu đầu bếp đã có trong chi tiết thực đơn.
+        // SqlException.Number = 547 nếu đầu bếp đã có trong chi tiết thực đơn.
         public int Delete(string ma) =>
             DbHelper.ExecuteNonQuery("DELETE FROM DauBep WHERE MaDauBep=@Ma", DbHelper.P("@Ma", ma));
 

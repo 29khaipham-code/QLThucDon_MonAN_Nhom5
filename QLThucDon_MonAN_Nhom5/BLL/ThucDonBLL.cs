@@ -3,15 +3,20 @@ using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class ThucDonBLL
     {
-        private readonly ThucDonDAL _dal = new ThucDonDAL();
-        private readonly DauBepDAL _dauBepDal = new DauBepDAL();
+        private readonly IThucDonDAL _dal;
+        private readonly IDauBepDAL _dauBepDal;
+
+        public ThucDonBLL() : this(new ThucDonDAL(), new DauBepDAL()) { }
+        public ThucDonBLL(IThucDonDAL dal, IDauBepDAL dauBepDal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+            _dauBepDal = dauBepDal ?? throw new ArgumentNullException(nameof(dauBepDal));
+        }
 
         public List<ThucDonDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public ThucDonDTO LayTheoSo(string so) => DbGuard.Run(() => _dal.GetById(so));
@@ -22,14 +27,14 @@ namespace QLThucDon_MonAN_Nhom5.BLL
         public decimal TinhThanhTien(int soLuong, decimal donGia) =>
             Math.Round(soLuong * donGia, 2, MidpointRounding.AwayFromZero);
 
-        //TongTien = tổng ThanhTien * (1 + VAT/100) - GiamGia, không âm.
+        // TongTien = tổng ThanhTien * (1 + VAT/100) - GiamGia, không âm.
         public decimal TinhTongTien(IEnumerable<ChiTietThucDonDTO> chiTiet, decimal vatPhanTram, decimal giamGia)
         {
             decimal tong = chiTiet.Sum(c => c.ThanhTien) * (1 + vatPhanTram / 100m) - giamGia;
             return Math.Max(0, Math.Round(tong, 2, MidpointRounding.AwayFromZero));
         }
 
-        //Thêm một dòng món vào danh sách đang soạn (trùng món thì cộng dồn số lượng)
+        // Thêm một dòng món vào danh sách đang soạn (trùng món thì cộng dồn số lượng)
         public void ThemDong(List<ChiTietThucDonDTO> ds, MonAnDTO mon, string maDauBep, string tenDauBep, int soLuong)
         {
             if (mon == null) throw new BusinessException("Hãy chọn món ăn.");

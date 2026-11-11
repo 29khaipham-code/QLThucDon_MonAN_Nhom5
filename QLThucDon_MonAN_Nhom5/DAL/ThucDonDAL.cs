@@ -1,21 +1,25 @@
-﻿using QLThucDon_MonAN_Nhom5.DTO;
-using System;
+﻿using Microsoft.Data.SqlClient;
+using QLThucDon_MonAN_Nhom5.DTO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class ThucDonDAL
+    public class ThucDonDAL : BaseDAL<ThucDonDTO>, IThucDonDAL
     {
         private const string SelectBase = @"
             SELECT td.SoThucDon, td.MaKhachHang, kh.TenKhachHang, kh.MaSoThue,
                    td.NgayDung, td.ThueVAT, td.GiamGia, td.TongTien
             FROM ThucDon td JOIN KhachHang kh ON kh.MaKhachHang = td.MaKhachHang";
 
-        private static ThucDonDTO Map(SqlDataReader r) => new ThucDonDTO
+        protected override string TableName => "ThucDon";
+        protected override string KeyColumn => "SoThucDon";
+        protected override string KeyColumnInSelect => "td.SoThucDon";
+        protected override string CodePrefix => "TD";
+        protected override int CodeWidth => 4;
+        protected override string SelectSql => SelectBase;
+        protected override string OrderBySql => "td.NgayDung DESC, td.SoThucDon DESC";
+
+        protected override ThucDonDTO Map(SqlDataReader r) => new ThucDonDTO
         {
             SoThucDon = r.Str("SoThucDon"),
             MaKhachHang = r.Str("MaKhachHang"),
@@ -27,13 +31,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             TongTien = r.Dec("TongTien")
         };
 
-        public List<ThucDonDTO> GetAll() =>
-            DbHelper.ExecuteList<ThucDonDTO>(SelectBase + " ORDER BY td.NgayDung DESC, td.SoThucDon DESC", Map);
-
-        public ThucDonDTO GetById(string so) =>
-            DbHelper.ExecuteList<ThucDonDTO>(SelectBase + " WHERE td.SoThucDon=@So", Map, DbHelper.P("@So", so)).FirstOrDefault();
-
-        /// <summary>Chi tiết một thực đơn (gọi riêng, không nhúng trong ThucDonDTO).</summary>
         public List<ChiTietThucDonDTO> GetChiTiet(string so) =>
             DbHelper.ExecuteList<ChiTietThucDonDTO>(@"
                 SELECT ct.SoThucDon, ct.MaMonAn, m.TenMonAn, ct.MaDauBep, d.TenDauBep,
@@ -54,9 +51,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     ThanhTien = r.Dec("ThanhTien")
                 }, DbHelper.P("@So", so));
 
-        public string NextCode() => DbHelper.NextCode("ThucDon", "SoThucDon", "TD", 4);
-
-        /// <summary>Lưu thực đơn + chi tiết trong 1 transaction; ThanhTien và TongTien do SQL tính từ MonAn.DonGia.</summary>
+        // Lưu thực đơn + chi tiết trong 1 transaction; ThanhTien và TongTien do SQL tính từ MonAn.DonGia.
         public void Insert(ThucDonDTO td, List<ChiTietThucDonDTO> chiTiet) => DbHelper.RunInTransaction((c, t) =>
         {
             DbHelper.ExecuteNonQuery(c, t,
@@ -76,7 +71,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             TinhLaiTongTien(c, t, td.SoThucDon);
         });
 
-        /// <summary>Chi tiết bị xoá theo (ON DELETE CASCADE).</summary>
+        // Chi tiết bị xoá theo (ON DELETE CASCADE).
         public int Delete(string so) =>
             DbHelper.ExecuteNonQuery("DELETE FROM ThucDon WHERE SoThucDon=@So", DbHelper.P("@So", so));
 
@@ -96,7 +91,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     DbHelper.P("@Bep", ct.MaDauBep), DbHelper.P("@SL", ct.SoLuong));
         }
 
-        //TongTien = SUM(ThanhTien) * (1 + VAT/100) - GiamGia (không âm)
+        // TongTien = SUM(ThanhTien) * (1 + VAT/100) - GiamGia (không âm)
         private static void TinhLaiTongTien(SqlConnection c, SqlTransaction t, string so) =>
             DbHelper.ExecuteNonQuery(c, t, @"
                 UPDATE td SET TongTien = CASE WHEN s.Tong * (1 + td.ThueVAT / 100.0) - td.GiamGia < 0 THEN 0

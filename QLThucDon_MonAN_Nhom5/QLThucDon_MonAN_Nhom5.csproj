@@ -202,9 +202,12 @@
     <Compile Include="BLL\NguyenLieuBLL.cs" />
     <Compile Include="BLL\ThucDonBLL.cs" />
     <Compile Include="DAL\BaoCaoDAL.cs" />
+    <Compile Include="DAL\BaseDAL.cs" />
     <Compile Include="DAL\DanhMucDAL.cs" />
     <Compile Include="DAL\DauBepDAL.cs" />
     <Compile Include="DAL\DbHelper.cs" />
+    <Compile Include="DAL\Interfaces\IDAL.cs" />
+    <Compile Include="DAL\Interfaces\IRepository.cs" />
     <Compile Include="DAL\KhachHangDAL.cs" />
     <Compile Include="DAL\MonAnDAL.cs" />
     <Compile Include="DAL\NguyenLieuDAL.cs" />
@@ -218,7 +221,13 @@
     <Compile Include="DTO\NguyenLieuDTO.cs" />
     <Compile Include="DTO\NguyenLieuMonAnDTO.cs" />
     <Compile Include="DTO\ThucDonDTO.cs" />
+    <Compile Include="GUI\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\Forms\BaoCao\BaoCaoHelper.cs" />
+    <Compile Include="GUI\Forms\BaoCao\BaseReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,12 +251,6 @@
     </Compile>
     <Compile Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.Designer.cs">
       <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoXxx.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\BaoCao\frmBaoCaoXxx.Designer.cs">
-      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Forms\DanhMuc\frmDanhMuc.cs">
       <SubType>Form</SubType>
@@ -317,9 +320,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.resx">
       <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoXxx.resx">
-      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDanhMuc.resx">
       <DependentUpon>frmDanhMuc.cs</DependentUpon>

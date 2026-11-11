@@ -2,18 +2,18 @@
 using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QLThucDon_MonAN_Nhom5.DAL;
-using QLThucDon_MonAN_Nhom5.DTO;
 
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class DanhMucBLL
     {
-        private readonly DanhMucDAL _dal = new DanhMucDAL();
+        private readonly IDanhMucDAL _dal;
+
+        public DanhMucBLL() : this(new DanhMucDAL()) { }
+        public DanhMucBLL(IDanhMucDAL dal) { _dal = dal ?? throw new ArgumentNullException(nameof(dal)); }
+
         public List<DanhMucDTO> LayTatCa(LoaiDanhMuc loai) => DbGuard.Run(() => _dal.GetAll(loai));
+
         public void Them(LoaiDanhMuc loai, DanhMucDTO d)
         {
             Check.Required(d.Ten, "Tên");

@@ -10,11 +10,16 @@ namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class KhachHangBLL
     {
-        private readonly KhachHangDAL _dal = new KhachHangDAL();
+        private readonly IKhachHangDAL _dal;
+
+        // Kết tập: BLL giữ một đối tượng thực hiện interface, không phụ thuộc lớp cụ thể.
+        public KhachHangBLL() : this(new KhachHangDAL()) { }
+        public KhachHangBLL(IKhachHangDAL dal) { _dal = dal ?? throw new ArgumentNullException(nameof(dal)); }
 
         public List<KhachHangDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public KhachHangDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
         public List<KhachHangDTO> TimKiem(string ten) => DbGuard.Run(() => _dal.TimKiem(ten));
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
 
         public void Them(KhachHangDTO k)
         {

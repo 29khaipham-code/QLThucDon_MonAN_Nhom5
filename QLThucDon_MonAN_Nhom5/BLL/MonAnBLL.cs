@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
-using QLThucDon_MonAN_Nhom5.DAL;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class MonAnBLL
     {
-        private  readonly MonAnDAL _dal = new MonAnDAL();
+        private readonly IMonAnDAL _dal;
 
-        public List<MonAnDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());// dua nghiep vu vao Dbguard 
+        public MonAnBLL() : this(new MonAnDAL()) { }
+        public MonAnBLL(IMonAnDAL dal) { _dal = dal ?? throw new ArgumentNullException(nameof(dal)); }
+
+        public List<MonAnDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public MonAnDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
         public List<NguyenLieuMonAnDTO> LayNguyenLieu(string maMonAn) => DbGuard.Run(() => _dal.GetNguyenLieu(maMonAn));
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
+        public DataTable LayLoaiMon() => DbGuard.Run(() => _dal.GetLoaiMon());
+        public DataTable LayCongDung() => DbGuard.Run(() => _dal.GetCongDung());
+
         public List<MonAnDTO> TimKiem(string maLoai, string maCongDung, string tenMon) =>
             DbGuard.Run(() => _dal.TimKiem(maLoai, maCongDung, tenMon));
 
-        // ---------- Yêu cầu 2: chỉ cho lấy món khi đã chọn đủ Loại và Đầu bếp ----------
+        // Chỉ cho lấy món khi đã chọn đủ Loại và Đầu bếp
         public List<MonAnDTO> LayMonTheoLoaiVaDauBep(string maLoai, string maDauBep)
         {
             if (string.IsNullOrWhiteSpace(maLoai) || string.IsNullOrWhiteSpace(maDauBep))
@@ -26,7 +32,7 @@ namespace QLThucDon_MonAN_Nhom5.BLL
             return DbGuard.Run(() => _dal.GetByLoaiVaDauBep(maLoai, maDauBep));
         }
 
-        // ---------- Yêu cầu 1: đơn giá = tổng tiền nguyên liệu (xem trước trên form) ----------
+        // Đơn giá = tổng tiền nguyên liệu (xem trước trên form)
         public decimal TinhDonGia(IEnumerable<NguyenLieuMonAnDTO> nguyenLieu) =>
             Math.Round(nguyenLieu.Sum(x => x.SoLuong * x.DonGia), 2, MidpointRounding.AwayFromZero);
 

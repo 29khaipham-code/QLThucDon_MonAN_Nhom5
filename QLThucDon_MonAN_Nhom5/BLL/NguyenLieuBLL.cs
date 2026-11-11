@@ -2,18 +2,19 @@
 using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class NguyenLieuBLL
     {
-        private readonly NguyenLieuDAL _dal = new NguyenLieuDAL();
+        private readonly INguyenLieuDAL _dal;
+
+        public NguyenLieuBLL() : this(new NguyenLieuDAL()) { }
+        public NguyenLieuBLL(INguyenLieuDAL dal) { _dal = dal ?? throw new ArgumentNullException(nameof(dal)); }
 
         public List<NguyenLieuDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public NguyenLieuDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
+        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
 
         public void Them(NguyenLieuDTO n)
         {
@@ -22,7 +23,7 @@ namespace QLThucDon_MonAN_Nhom5.BLL
             DbGuard.Run(() => _dal.Insert(n));
         }
 
-        //Sửa giá nguyên liệu => DAL tự tính lại đơn giá các món ăn liên quan.
+        // Sửa giá nguyên liệu => DAL tự tính lại đơn giá các món ăn liên quan.
         public void Sua(NguyenLieuDTO n)
         {
             Check.Required(n.MaNguyenLieu, "Mã nguyên liệu");

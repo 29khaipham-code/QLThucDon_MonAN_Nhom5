@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using Microsoft.Data.SqlClient;
-using System.Configuration;
+﻿using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.DTO;
-
+using System.Collections.Generic;
+using System.Data;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class MonAnDAL
+    public class MonAnDAL : BaseDAL<MonAnDTO>, IMonAnDAL
     {
         private const string SelectBase = @"
             SELECT m.MaMonAn, m.TenMonAn, m.MaLoai, l.TenLoai, m.MaCongDung, cd.TenCongDung,
@@ -20,7 +14,14 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             JOIN LoaiMon l ON l.MaLoai = m.MaLoai
             LEFT JOIN CongDung cd ON cd.MaCongDung = m.MaCongDung";
 
-        private static MonAnDTO Map(SqlDataReader r) => new MonAnDTO
+        protected override string TableName => "MonAn";
+        protected override string KeyColumn => "MaMonAn";
+        protected override string KeyColumnInSelect => "m.MaMonAn";
+        protected override string CodePrefix => "MA";
+        protected override string SelectSql => SelectBase;
+        protected override string OrderBySql => "m.MaMonAn";
+
+        protected override MonAnDTO Map(SqlDataReader r) => new MonAnDTO
         {
             MaMonAn = r.Str("MaMonAn"),
             TenMonAn = r.Str("TenMonAn"),
@@ -33,13 +34,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             YeuCau = r.Str("YeuCau")
         };
 
-        public List<MonAnDTO> GetAll() =>
-            DbHelper.ExecuteList<MonAnDTO>(SelectBase + " ORDER BY m.MaMonAn", Map);
-
-        public MonAnDTO GetById(string ma) =>
-            DbHelper.ExecuteList<MonAnDTO>(SelectBase + " WHERE m.MaMonAn=@Ma", Map, DbHelper.P("@Ma", ma)).FirstOrDefault();
-
-        //Nguyên liệu của một món (gọi riêng, không nhúng trong MonAnDTO)
         public List<NguyenLieuMonAnDTO> GetNguyenLieu(string maMonAn) =>
             DbHelper.ExecuteList<NguyenLieuMonAnDTO>(@"
                 SELECT x.MaMonAn, x.MaNguyenLieu, nl.TenNguyenLieu, dvt.TenDonViTinh,
@@ -59,9 +53,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     ThanhTien = r.Dec("ThanhTien")
                 }, DbHelper.P("@Ma", maMonAn));
 
-        public string NextCode() => DbHelper.NextCode("MonAn", "MaMonAn", "MA", 3);
-
-        // ---------- Yêu cầu 3: tìm món ăn theo loại, công dụng, tên ----------
         public List<MonAnDTO> TimKiem(string maLoai, string maCongDung, string tenMon) =>
             DbHelper.ExecuteList<MonAnDTO>(SelectBase + @"
                 WHERE (@Loai IS NULL OR m.MaLoai = @Loai)
@@ -72,7 +63,6 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 DbHelper.P("@CD", DbHelper.NullIfEmpty(maCongDung)),
                 DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon)));
 
-        // ---------- Yêu cầu 2: món thuộc loại X mà đầu bếp Y làm được ----------
         public List<MonAnDTO> GetByLoaiVaDauBep(string maLoai, string maDauBep) =>
             DbHelper.ExecuteList<MonAnDTO>(SelectBase + @"
                 JOIN DauBep_MonAn db ON db.MaMonAn = m.MaMonAn
@@ -80,7 +70,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 ORDER BY m.TenMonAn", Map,
                 DbHelper.P("@Loai", maLoai), DbHelper.P("@Bep", maDauBep));
 
-        // ---------- CRUD (DonGia do trigger trg_TinhDonGiaMonAn tự tính) ----------
+        // DonGia do trigger trg_TinhDonGiaMonAn tự tính
         public void Insert(MonAnDTO m, List<NguyenLieuMonAnDTO> nguyenLieu) => DbHelper.RunInTransaction((c, t) =>
         {
             DbHelper.ExecuteNonQuery(c, t,
@@ -98,7 +88,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             SaveNguyenLieu(c, t, m.MaMonAn, nguyenLieu);
         });
 
-        //SqlException.Number = 547 nếu món đang có đầu bếp làm được hoặc nằm trong thực đơn.
+        // SqlException.Number = 547 nếu món đang có đầu bếp làm được hoặc nằm trong thực đơn.
         public int Delete(string ma) =>
             DbHelper.ExecuteNonQuery("DELETE FROM MonAn WHERE MaMonAn=@Ma", DbHelper.P("@Ma", ma));
 
@@ -115,18 +105,15 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                     "INSERT INTO NguyenLieu_MonAn(MaMonAn,MaNguyenLieu,SoLuong) VALUES(@MA,@NL,@SL)",
                     DbHelper.P("@MA", maMonAn), DbHelper.P("@NL", nl.MaNguyenLieu), DbHelper.P("@SL", nl.SoLuong));
         }
-        // Lấy danh sách loại món
-        public DataTable GetLoaiMon()
-        {
-            string sql = "SELECT MaLoai, TenLoai FROM LoaiMon ORDER BY TenLoai";
-            return DbHelper.ExecuteDataTable(sql);
-        }
 
-        // Lấy danh sách công dụng
-        public DataTable GetCongDung()
-        {
-            string sql = "SELECT MaCongDung, TenCongDung FROM CongDung ORDER BY TenCongDung";
-            return DbHelper.ExecuteDataTable(sql);
-        }
+        public DataTable GetLoaiMon() =>
+            DbHelper.ExecuteDataTable("SELECT MaLoai, TenLoai FROM LoaiMon ORDER BY TenLoai");
+
+        public DataTable GetCongDung() =>
+            DbHelper.ExecuteDataTable("SELECT MaCongDung, TenCongDung FROM CongDung ORDER BY TenCongDung");
+
+        
     }
 }
+
+
