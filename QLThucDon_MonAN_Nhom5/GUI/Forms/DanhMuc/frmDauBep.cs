@@ -1,6 +1,5 @@
 using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.BLL;
-using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 using QLThucDon_MonAN_Nhom5.GUI;
 using System;
@@ -80,13 +79,20 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         private void NapDanhMuc()
         {
             comboBox1.DataSource = _bll.LayTrinhDo();
-            comboBox1.DisplayMember = "TenTrinhDo"; comboBox1.ValueMember = "MaTrinhDo";
+            comboBox1.DisplayMember = nameof(DanhMucDTO.Ten);
+            comboBox1.ValueMember = nameof(DanhMucDTO.Ma);
+
             comboBox2.DataSource = _bll.LayNoiHoc();
-            comboBox2.DisplayMember = "TenNoiHoc"; comboBox2.ValueMember = "MaNoiHoc";
+            comboBox2.DisplayMember = nameof(DanhMucDTO.Ten);
+            comboBox2.ValueMember = nameof(DanhMucDTO.Ma);
+
             comboBox3.DataSource = _bll.LayDanhSachMonAn();
-            comboBox3.DisplayMember = "TenMonAn"; comboBox3.ValueMember = "MaMonAn";
+            comboBox3.DisplayMember = nameof(MonAnDTO.TenMonAn);
+            comboBox3.ValueMember = nameof(MonAnDTO.MaMonAn);
+
             comboBox4.DataSource = _bll.LayXepLoai();
-            comboBox4.DisplayMember = "TenXepLoai"; comboBox4.ValueMember = "MaXepLoai";
+            comboBox4.DisplayMember = nameof(DanhMucDTO.Ten);
+            comboBox4.ValueMember = nameof(DanhMucDTO.Ma);
             comboBox1.DropDownStyle = comboBox2.DropDownStyle = comboBox3.DropDownStyle = comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
@@ -167,9 +173,9 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 string ten = Convert.ToString(r.Cells["colTenmon"].Value);
                 string xl = Convert.ToString(r.Cells["colXeploai"].Value);
                 string tenXl = "";
-                var selected = comboBox4.Items.Cast<object>().OfType<DataRowView>()
-                    .FirstOrDefault(x => Convert.ToString(x[comboBox4.ValueMember]) == xl);
-                if (selected != null) tenXl = Convert.ToString(selected[comboBox4.DisplayMember]);
+                var selected = comboBox4.Items.Cast<DanhMucDTO>()
+                    .FirstOrDefault(x => x.Ma == xl);
+                if (selected != null) tenXl = selected.Ten;
                 dt.Rows.Add(ma, ten ?? "", xl ?? "", tenXl);
             }
             return dt;
@@ -195,10 +201,10 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 { MessageBox.Show("Món này đã có trong danh sách."); return; }
 
                 var bang = TaoBangMonAnHienTai();
-                var mon = comboBox3.SelectedItem as DataRowView;
-                var xl = comboBox4.SelectedItem as DataRowView;
-                bang.Rows.Add(maMon, Convert.ToString(mon?[comboBox3.DisplayMember]),
-                    Convert.ToString(comboBox4.SelectedValue), Convert.ToString(xl?[comboBox4.DisplayMember]));
+                var mon = comboBox3.SelectedItem as MonAnDTO;
+                var xl = comboBox4.SelectedItem as DanhMucDTO;
+                bang.Rows.Add(maMon, mon?.TenMonAn ?? "",
+                    Convert.ToString(comboBox4.SelectedValue), xl?.Ten ?? "");
                 GanBangMonAn(bang);
             }
             catch (Exception ex) { BaoLoi("Không thêm được món vào danh sách.", ex); }
