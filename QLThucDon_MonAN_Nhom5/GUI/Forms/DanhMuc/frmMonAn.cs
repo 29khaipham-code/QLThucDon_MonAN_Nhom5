@@ -53,7 +53,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             Sua
         }
 
-        private readonly MonAnDAL monAnDAL = new MonAnDAL();
+        private readonly MonAnBLL monAnBLL = new MonAnBLL();
         private readonly NguyenLieuBLL nguyenLieuBLL = new NguyenLieuBLL();
         private readonly DataTable dtNguyenLieu = new DataTable();
 
@@ -366,12 +366,12 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 dangTai = true;
 
                 // 1. Load loại món
-                cboLoai.DataSource = monAnDAL.GetLoaiMon();
+                cboLoai.DataSource = monAnBLL.LayLoaiMon();
                 cboLoai.DisplayMember = "TenLoai";
                 cboLoai.ValueMember = "MaLoai";
 
                 // 2. Load công dụng
-                DataTable dtCD = monAnDAL.GetCongDung();
+                DataTable dtCD = monAnBLL.LayCongDung();
 
                 DataRow trong = dtCD.NewRow();
                 trong["MaCongDung"] = "";
@@ -413,7 +413,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             try
             {
                 dangTai = true;
-                dgvMonAn.DataSource = monAnDAL.GetAll();
+                dgvMonAn.DataSource = monAnBLL.LayTatCa();
                 dangTai = false;
 
                 bool timThay = false;
@@ -455,7 +455,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
                         try
                         {
-                            txtMaMon.Text = monAnDAL.NextCode();
+                            txtMaMon.Text = "";
                         }
                         catch
                         {
@@ -527,7 +527,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
             try
             {
-                foreach (var x in monAnDAL.GetNguyenLieu(m.MaMonAn))
+                foreach (var x in monAnBLL.LayNguyenLieu(m.MaMonAn))
                 {
                     dtNguyenLieu.Rows.Add(
                         x.MaNguyenLieu,
@@ -713,7 +713,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
                 XoaForm();
 
-                txtMaMon.Text = monAnDAL.NextCode();
+                txtMaMon.Text = monAnBLL.TaoMaMoi();
 
                 SetCheDo(CheDo.Them);
                 txtTenMon.Focus();
@@ -826,11 +826,11 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             {
                 if (cheDo == CheDo.Them)
                 {
-                    monAnDAL.Insert(mon, dsNL);
+                    monAnBLL.Them(mon, dsNL);
                 }
                 else
                 {
-                    monAnDAL.Update(mon, dsNL);
+                    monAnBLL.Sua(mon, dsNL);
                 }
 
                 MessageBox.Show(
@@ -892,21 +892,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
             try
             {
-                // Xóa nguyên liệu liên quan và món ăn trong một transaction
-                DbHelper.RunInTransaction((c, t) =>
-                {
-                    DbHelper.ExecuteNonQuery(
-                        c,
-                        t,
-                        "DELETE FROM NguyenLieu_MonAn WHERE MaMonAn=@Ma",
-                        DbHelper.P("@Ma", m.MaMonAn));
-
-                    DbHelper.ExecuteNonQuery(
-                        c,
-                        t,
-                        "DELETE FROM MonAn WHERE MaMonAn=@Ma",
-                        DbHelper.P("@Ma", m.MaMonAn));
-                });
+                monAnBLL.Xoa(m.MaMonAn);
 
                 MessageBox.Show(
                     "Đã xoá món ăn!",

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.DTO;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace QLThucDon_MonAN_Nhom5.DAL

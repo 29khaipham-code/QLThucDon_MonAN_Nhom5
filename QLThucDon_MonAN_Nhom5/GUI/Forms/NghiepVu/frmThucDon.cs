@@ -18,9 +18,9 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
         // ================= DỮ LIỆU VÀ BLL / DAL =================
 
         private readonly ThucDonBLL thucDonBLL = new ThucDonBLL();
-        private readonly KhachHangDAL khachHangDAL = new KhachHangDAL();
-        private readonly DauBepDAL dauBepDAL = new DauBepDAL();
-        private readonly MonAnDAL monAnDAL = new MonAnDAL();
+        private readonly KhachHangBLL khachHangBLL = new KhachHangBLL();
+        private readonly DauBepBLL dauBepBLL = new DauBepBLL();
+        private readonly MonAnBLL monAnBLL = new MonAnBLL();
 
         // Bảng tạm lưu các món thuộc thực đơn đang lập
         private readonly DataTable dtChiTiet = new DataTable();
@@ -267,19 +267,18 @@ float weight,
                 dangTai = true;
 
                 // Tải danh sách khách hàng
-                cboKhachHang.DataSource = khachHangDAL.GetAll();
+                cboKhachHang.DataSource = thucDonBLL.LayKhachHang();
                 cboKhachHang.DisplayMember = "TenKhachHang";
                 cboKhachHang.ValueMember = "MaKhachHang";
 
                 // Tải danh sách loại món
-                cboLoaiMon.DataSource = DbHelper.ExecuteDataTable(
-                    "SELECT MaLoai, TenLoai FROM LoaiMon ORDER BY TenLoai");
+                cboLoaiMon.DataSource = thucDonBLL.LayLoaiMon();
 
                 cboLoaiMon.DisplayMember = "TenLoai";
                 cboLoaiMon.ValueMember = "MaLoai";
 
                 // Tải danh sách đầu bếp
-                cboDauBep.DataSource = dauBepDAL.GetAll();
+                cboDauBep.DataSource = thucDonBLL.LayDauBep();
                 cboDauBep.DisplayMember = "TenDauBep";
                 cboDauBep.ValueMember = "MaDauBep";
 
@@ -336,7 +335,7 @@ float weight,
                 try
                 {
                     cboMonAn.DataSource =
-                        monAnDAL.GetByLoaiVaDauBep(maLoai, maBep);
+                        thucDonBLL.LayMonTheoLoaiVaDauBep(maLoai, maBep);
 
                     cboMonAn.DisplayMember = "TenMonAn";
                     cboMonAn.ValueMember = "MaMonAn";

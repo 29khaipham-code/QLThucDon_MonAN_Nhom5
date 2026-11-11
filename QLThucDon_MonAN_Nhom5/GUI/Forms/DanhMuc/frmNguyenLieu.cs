@@ -14,7 +14,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 {
     public partial class frmNguyenLieu : Form
     {
-        private NguyenLieuDAL _nguyenLieuDAL = new NguyenLieuDAL();
+        private NguyenLieuBLL _nguyenLieuBLL = new NguyenLieuBLL();
         private DanhMucBLL _danhMucBLL = new DanhMucBLL();
         private bool _isAdding = false;
 
@@ -56,7 +56,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
         {
             try
             {
-                dgvNguyenLieu.DataSource = _nguyenLieuDAL.GetAll();
+                dgvNguyenLieu.DataSource = _nguyenLieuBLL.LayTatCa();
 
                 if (dgvNguyenLieu.Columns.Count > 0)
                 {
@@ -108,7 +108,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             _isAdding = true;
             SetControlState(true);
             ClearInputs();
-            txtMaNL.Text = _nguyenLieuDAL.NextCode();
+            txtMaNL.Text = _nguyenLieuBLL.TaoMaMoi();
             txtTenNL.Focus();
         }
 
@@ -138,7 +138,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             {
                 try
                 {
-                    _nguyenLieuDAL.Delete(txtMaNL.Text);
+                    _nguyenLieuBLL.Xoa(txtMaNL.Text);
 
                     MessageBox.Show("Xóa nguyên liệu thành công!");
 
@@ -198,8 +198,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
             try
             {
-                if (_isAdding) _nguyenLieuDAL.Insert(nl);
-                else _nguyenLieuDAL.Update(nl);
+                if (_isAdding) _nguyenLieuBLL.Them(nl);
+                else _nguyenLieuBLL.Sua(nl);
 
                 LoadData();
                 SetControlState(false);

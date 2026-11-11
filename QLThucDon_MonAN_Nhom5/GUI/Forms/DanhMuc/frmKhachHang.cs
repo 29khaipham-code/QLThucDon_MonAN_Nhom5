@@ -1,15 +1,16 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
-using System.Drawing;
 using QLThucDon_MonAN_Nhom5.GUI;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 {
     public partial class frmKhachHang : Form
     {
-        private KhachHangDAL _khachHangDAL = new KhachHangDAL();
+        private readonly KhachHangBLL _khachHangBLL = new KhachHangBLL();
         private bool _isAdding = false;
 
         public frmKhachHang()
@@ -26,8 +27,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void LoadData()
         {
-            // Sử dụng GetAll() theo đúng DAL
-            dgvKhachHang.DataSource = _khachHangDAL.GetAll();
+            // Sử dụng GetAll() theo đúng BLL
+            dgvKhachHang.DataSource = _khachHangBLL.LayTatCa();
 
             if (dgvKhachHang.Columns.Count > 0)
             {
@@ -69,7 +70,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             ClearInputs();
 
             // Gọi hàm NextCode() để tự động điền mã KH mới (VD: KH004)
-            txtMaKH.Text = _khachHangDAL.NextCode();
+            txtMaKH.Text = _khachHangBLL.TaoMaMoi();
 
             SetControlState(true);
             txtTenKH.Focus();
@@ -94,7 +95,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             if (MessageBox.Show("Xóa khách hàng này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 // Sử dụng Delete()
-                _khachHangDAL.Delete(txtMaKH.Text);
+                _khachHangBLL.Xoa(txtMaKH.Text);
                 LoadData();
                 ClearInputs();
             }
@@ -120,12 +121,12 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             if (_isAdding)
             {
                 // Sử dụng Insert()
-                _khachHangDAL.Insert(kh);
+                _khachHangBLL.Them(kh);
             }
             else
             {
                 // Sử dụng Update()
-                _khachHangDAL.Update(kh);
+                _khachHangBLL.Sua(kh);
             }
 
             LoadData();
