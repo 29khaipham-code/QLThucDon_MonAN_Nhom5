@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Windows.Forms;
-using System.Drawing;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
+using QLThucDon_MonAN_Nhom5.GUI;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Forms;
 
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
 {
-    public partial class frmThucDon : Form
+    public partial class frmThucDon : BaseForm
     {
         // ================= DỮ LIỆU VÀ BLL / DAL =================
 
@@ -21,6 +22,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
         private readonly KhachHangBLL khachHangBLL = new KhachHangBLL();
         private readonly DauBepBLL dauBepBLL = new DauBepBLL();
         private readonly MonAnBLL monAnBLL = new MonAnBLL();
+        private readonly DanhMucBLL danhMucBLL = new DanhMucBLL();
 
         // Bảng tạm lưu các món thuộc thực đơn đang lập
         private readonly DataTable dtChiTiet = new DataTable();
@@ -61,16 +63,56 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
         public frmThucDon()
         {
             InitializeComponent();
+
             KhoiTaoNgayDung();
 
-            // Áp dụng giao diện dùng chung từ Ui.cs
-            ApDungGiaoDien();
+            // Sử dụng các hàm định dạng chung từ BaseForm
+            DinhDangForm("Quản lý thực đơn");
+            DinhDangODuLieu(this);
 
-            // Khởi tạo bảng chi tiết và các cột
+            // Định dạng các nút
+            DinhDangNutBam(btnThemMon, true);
+            DinhDangNutBam(btnThemMoi, true);
+            DinhDangNutBam(btnLuu, true);
+
+            DinhDangNutBam(btnXoaDong, false);
+            DinhDangNutBam(btnXoa, false);
+            DinhDangNutBam(btnInThucDon, false);
+
+            // Các ô chỉ hiển thị, không cho nhập
+            txtMaSoThue.ReadOnly = true;
+            txtDonGia.ReadOnly = true;
+            txtThanhTien.ReadOnly = true;
+            txtTongTien.ReadOnly = true;
+
+            // ComboBox chỉ cho phép chọn dữ liệu có sẵn
+            foreach (ComboBox cb in new[]
+            {
+        cboKhachHang,
+        cboLoaiMon,
+        cboDauBep,
+        cboMonAn
+    })
+            {
+                cb.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+
+            // Định dạng DateTimePicker
+            dateTimePicker1.CalendarForeColor = Ui.Text;
+            dateTimePicker1.CalendarMonthBackground = Ui.Surface;
+
+            // Định dạng DataGridView
+            DinhDangLuoi(dgvChiTiet, 28);
+
+            dgvChiTiet.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvChiTiet.ColumnHeadersHeight = 34;
+
+            // Khởi tạo bảng chi tiết
             SetupGrid();
 
-            // ================= ĐĂNG KÝ SỰ KIỆN =================
-
+            // Đăng ký sự kiện
             Load += frmThucDon_Load;
 
             cboKhachHang.SelectedIndexChanged +=
@@ -80,7 +122,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
                 (s, e) => LoadMonAn();
 
             cboDauBep.SelectedIndexChanged +=
-(s, e) => LoadMonAn();
+                (s, e) => LoadMonAn();
 
             cboMonAn.SelectedIndexChanged +=
                 (s, e) => CapNhatDonGia();
@@ -107,100 +149,9 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu
         // =====================================================
         // GIAO DIỆN - dùng màu và hàm StyleGrid của Ui.cs gốc
         // =====================================================
-        private void ApDungGiaoDien()
-        {
-            this.BackColor = Ui.Back;
-            this.ForeColor = Ui.Text;
-            this.Font = new Font("Segoe UI", 9F);
-            this.Text = "Quản lý thực đơn";
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            // Áp dụng cho control do Designer tạo, kể cả control nằm trong GroupBox/Panel.
-            DinhDangControl(this);
-
-            // Các nút quan trọng / nút phụ
-            DinhDangNut(btnThemMon, true);
-            DinhDangNut(btnThemMoi, true);
-            DinhDangNut(btnLuu, true);
-            DinhDangNut(btnXoaDong, false);
-            DinhDangNut(btnXoa, false);
-            DinhDangNut(btnInThucDon, false);
-
-            // Các ô tự tính, không cho sửa trực tiếp
-            txtMaSoThue.ReadOnly = true;
-            txtDonGia.ReadOnly = true;
-            txtThanhTien.ReadOnly = true;
-            txtTongTien.ReadOnly = true;
-
-            foreach (ComboBox cb in new[] { cboKhachHang, cboLoaiMon, cboDauBep, cboMonAn })
-                cb.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            Ui.StyleGrid(dgvChiTiet);
-            dgvChiTiet.AllowUserToAddRows = false;
-            dgvChiTiet.AllowUserToDeleteRows = false;
-            dgvChiTiet.ReadOnly = true;
-            dgvChiTiet.MultiSelect = false;
-            dgvChiTiet.RowHeadersVisible = false;
-            dgvChiTiet.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvChiTiet.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvChiTiet.ColumnHeadersHeight = 34;
-            dgvChiTiet.RowTemplate.Height = 28;
-        }
-
-        private void DinhDangControl(Control parent)
-        {
-            foreach (Control c in parent.Controls)
-            {
-                if (c is GroupBox group)
-                {
-                    group.ForeColor = Ui.Dark;
-                    group.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-                }
-                else if (c is Label label)
-                {
-                    label.ForeColor = Ui.Text;
-                    label.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-                }
-                else if (c is TextBox txt)
-                {
-                    txt.BackColor = Ui.Surface;
-                    txt.ForeColor = Ui.Text;
-                    txt.BorderStyle = BorderStyle.FixedSingle;
-                }
-                else if (c is ComboBox combo)
-                {
-                    combo.BackColor = Ui.Surface;
-                    combo.ForeColor = Ui.Text;
-                    combo.FlatStyle = FlatStyle.Flat;
-                }
-                else if (c is DateTimePicker date)
-                {
-                    date.CalendarForeColor = Ui.Text;
-                    date.CalendarMonthBackground = Ui.Surface;
-                }
-
-                if (c.HasChildren)
-                    DinhDangControl(c);
-            }
-        }
-
-        private void DinhDangNut(Button b, bool primary)
-        {
-            b.FlatStyle = FlatStyle.Flat;
-            b.UseVisualStyleBackColor = false;
-            b.Cursor = Cursors.Hand;
-            b.BackColor = primary ? Ui.Accent : Ui.Surface;
-            b.ForeColor = primary ? Color.White : Ui.Dark;
-            b.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            b.FlatAppearance.BorderSize = 1;
-            b.FlatAppearance.BorderColor = primary ? Ui.Accent : Ui.Border;
-            b.FlatAppearance.MouseOverBackColor = primary ? Ui.Dark : Ui.Hover;
-            b.FlatAppearance.MouseDownBackColor = Ui.Header;
-        }
-
-        // =====================================================
-        // KHỞI TẠO DATATABLE VÀ DATAGRIDVIEW
-        // =====================================================
+       
+      
+ 
 
         private void SetupGrid()
         {
@@ -267,20 +218,22 @@ float weight,
                 dangTai = true;
 
                 // Tải danh sách khách hàng
-                cboKhachHang.DataSource = thucDonBLL.LayKhachHang();
-                cboKhachHang.DisplayMember = "TenKhachHang";
-                cboKhachHang.ValueMember = "MaKhachHang";
+                // Tải danh sách khách hàng
+                cboKhachHang.DataSource = khachHangBLL.LayTatCa();
+                cboKhachHang.DisplayMember = nameof(KhachHangDTO.TenKhachHang);
+                cboKhachHang.ValueMember = nameof(KhachHangDTO.MaKhachHang);
 
                 // Tải danh sách loại món
-                cboLoaiMon.DataSource = thucDonBLL.LayLoaiMon();
+                cboLoaiMon.DataSource =
+                    danhMucBLL.LayTatCa(LoaiDanhMuc.LoaiMon);
 
-                cboLoaiMon.DisplayMember = "TenLoai";
-                cboLoaiMon.ValueMember = "MaLoai";
+                cboLoaiMon.DisplayMember = nameof(DanhMucDTO.Ten);
+                cboLoaiMon.ValueMember = nameof(DanhMucDTO.Ma);
 
                 // Tải danh sách đầu bếp
-                cboDauBep.DataSource = thucDonBLL.LayDauBep();
-                cboDauBep.DisplayMember = "TenDauBep";
-                cboDauBep.ValueMember = "MaDauBep";
+                cboDauBep.DataSource = dauBepBLL.LayTatCa();
+                cboDauBep.DisplayMember = nameof(DauBepDTO.TenDauBep);
+                cboDauBep.ValueMember = nameof(DauBepDTO.MaDauBep);
 
                 dangTai = false;
 
@@ -334,8 +287,10 @@ float weight,
             {
                 try
                 {
-                    cboMonAn.DataSource =
-                        thucDonBLL.LayMonTheoLoaiVaDauBep(maLoai, maBep);
+                    cboMonAn.DataSource = monAnBLL.LayMonTheoLoaiVaDauBep(maLoai, maBep);
+
+                    cboMonAn.DisplayMember = nameof(MonAnDTO.TenMonAn);
+                    cboMonAn.ValueMember = nameof(MonAnDTO.MaMonAn);
 
                     cboMonAn.DisplayMember = "TenMonAn";
                     cboMonAn.ValueMember = "MaMonAn";
