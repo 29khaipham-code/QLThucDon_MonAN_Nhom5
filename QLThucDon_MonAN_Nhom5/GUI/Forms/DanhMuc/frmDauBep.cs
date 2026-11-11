@@ -2,6 +2,7 @@ using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
+using QLThucDon_MonAN_Nhom5.GUI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,15 +13,42 @@ using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 {
-    public partial class frmDauBep : Form
+    public partial class frmDauBep : BaseForm
     {
-        private readonly DauBepBLL _bll = new DauBepBLL();
+        // BLL đã làm việc thông qua IDauBepDAL; form không truy cập DAL trực tiếp.
+        private readonly DauBepBLL _bll;
         private bool _dangThem;
 
-        public frmDauBep()
+        // Constructor không tham số được giữ lại để WinForms Designer và frmMain sử dụng.
+        public frmDauBep() : this(new DauBepBLL())
         {
+        }
+
+        // Constructor này cho phép truyền BLL khi cần kiểm thử hoặc thay thế tầng dữ liệu.
+        public frmDauBep(DauBepBLL bll)
+        {
+            _bll = bll ?? throw new ArgumentNullException(nameof(bll));
+
             InitializeComponent();
-            ApDungGiaoDien();
+
+            // Tái sử dụng giao diện chung từ BaseForm.
+            DinhDangForm("Quản lý đầu bếp");
+            DinhDangODuLieu(this);
+
+            DinhDangNutBam(button1, true);
+            DinhDangNutBam(button2, false);
+            DinhDangNutBam(button3, true);
+            DinhDangNutBam(button4, false);
+            DinhDangNutBam(button5, false);
+            DinhDangNutBam(button6, true);
+
+            // Bảng danh sách đầu bếp chỉ dùng để xem/chọn.
+            DinhDangLuoi(dataGridView2);
+            // Bảng món làm được cho phép chỉnh sửa xếp loại ngay trên lưới.
+            DinhDangLuoi(dataGridView1);
+            dataGridView1.ReadOnly = false;
+            dataGridView1.AllowUserToAddRows = false;
+
             Load += QuanLyDauBep_Load;
             dataGridView2.SelectionChanged += dataGridView2_SelectionChanged;
             button3.Click += button3_Click;
@@ -29,101 +57,13 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             button6.Click += button6_Click;
             button1.Click += button1_Click;
             button2.Click += button2_Click;
+
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.MultiSelect = false;
             dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView2.MultiSelect = false;
             dataGridView2.ReadOnly = true;
             dataGridView2.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToAddRows = false;
-        }
-
-
-        // Áp dụng bảng màu và style thống nhất từ GUI/Ui.cs cho giao diện danh mục.
-        private void ApDungGiaoDien()
-        {
-            BackColor = Ui.Back;
-            ForeColor = Ui.Text;
-            Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            panel1.BackColor = Ui.Back;
-
-            StyleGroupBox(groupBox1);
-            StyleGroupBox(groupBox2);
-
-            // Dùng chung style DataGridView đã định nghĩa trong Ui.cs.
-            Ui.StyleGrid(dataGridView1);
-            Ui.StyleGrid(dataGridView2);
-            StyleGridRows(dataGridView1);
-            StyleGridRows(dataGridView2);
-
-            // Giữ nguyên các button có sẵn trong Designer, chỉ thay đổi giao diện.
-            StyleButton(button1, true);
-            StyleButton(button2, false);
-            StyleButton(button3, true);
-            StyleButton(button4, false);
-            StyleButton(button5, false);
-            StyleButton(button6, true);
-
-            foreach (var label in new[] { label1, label2, label3, label4, label5, label6, label7, label8, label9 })
-            {
-                label.ForeColor = Ui.Text;
-                label.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            }
-
-            foreach (var input in new[] { textBox1, textBox2, textBox3, textBox4 })
-            {
-                input.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-                input.BackColor = Ui.Surface;
-                input.ForeColor = Ui.Text;
-                input.BorderStyle = BorderStyle.FixedSingle;
-            }
-
-            foreach (var combo in new[] { comboBox1, comboBox2, comboBox3, comboBox4 })
-            {
-                combo.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-                combo.BackColor = Ui.Surface;
-                combo.ForeColor = Ui.Text;
-                combo.FlatStyle = FlatStyle.Flat;
-            }
-
-            radioButton1.ForeColor = Ui.Text;
-            radioButton2.ForeColor = Ui.Text;
-            radioButton1.Font = radioButton2.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-        }
-
-        private void StyleGroupBox(GroupBox group)
-        {
-            group.BackColor = Ui.Surface;
-            group.ForeColor = Ui.Dark;
-            group.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        }
-
-        private void StyleButton(Button button, bool primary)
-        {
-            button.FlatStyle = FlatStyle.Flat;
-            button.UseVisualStyleBackColor = false;
-            button.BackColor = primary ? Ui.Accent : Ui.Surface;
-            button.ForeColor = primary ? Color.White : Ui.Dark;
-            button.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button.Cursor = Cursors.Hand;
-            button.FlatAppearance.BorderSize = 1;
-            button.FlatAppearance.BorderColor = primary ? Ui.Accent : Ui.Border;
-            button.FlatAppearance.MouseOverBackColor = Ui.Hover;
-            button.FlatAppearance.MouseDownBackColor = Ui.Header;
-            button.Height = Math.Max(button.Height, 32);
-        }
-
-        private void StyleGridRows(DataGridView grid)
-        {
-            grid.BorderStyle = BorderStyle.None;
-            grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            grid.RowTemplate.Height = 28;
-            grid.ColumnHeadersHeight = 34;
-            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid.MultiSelect = false;
         }
 
         private void QuanLyDauBep_Load(object sender, EventArgs e)
