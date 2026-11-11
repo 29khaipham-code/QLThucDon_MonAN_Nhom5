@@ -12,8 +12,7 @@ namespace QLThucDon_MonAN_Nhom5.BLL
         public NguyenLieuBLL() : this(new NguyenLieuDAL()) { }
         public NguyenLieuBLL(INguyenLieuDAL dal) { _dal = dal ?? throw new ArgumentNullException(nameof(dal)); }
 
-        public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
-
+        
         public List<NguyenLieuDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public NguyenLieuDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
         public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
