@@ -69,20 +69,71 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             while (r.Read()) list.Add(map(r));
             return list;
         }
+        public static List<T> ExecuteProcList<T>(
+    string proc,
+    Func<SqlDataReader, T> map,
+    params SqlParameter[] ps)
+        {
+            var list = new List<T>();
+
+            using var conn = CreateConnection();
+            conn.Open();
+
+            using var cmd = new SqlCommand(proc, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            if (ps != null && ps.Length > 0)
+                cmd.Parameters.AddRange(ps);
+
+            using var r = cmd.ExecuteReader();
+
+            while (r.Read())
+                list.Add(map(r));
+
+            return list;
+        }
 
         // ---------- Thao tác ghi ----------
+        public static DataTable ExecuteProcTable(string proc, params SqlParameter[] ps)
+        {
+            using var conn = CreateConnection();
+
+            using var cmd = new SqlCommand(proc, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            if (ps != null && ps.Length > 0)
+                cmd.Parameters.AddRange(ps);
+
+            using var da = new SqlDataAdapter(cmd);
+
+            var dt = new DataTable();
+            da.Fill(dt);
+
+            return dt;
+        }
+
+        // ---------- Thao tác ghi ----------
+
+        // Chạy câu SQL thông thường
         public static int ExecuteNonQuery(string sql, params SqlParameter[] ps)
         {
             using var conn = CreateConnection();
             conn.Open();
+
             using var cmd = Build(conn, null, sql, ps);
+
             return cmd.ExecuteNonQuery();
         }
 
-        //Chạy trong transaction có sẵn
-        public static int ExecuteNonQuery(SqlConnection c, SqlTransaction t, string sql, params SqlParameter[] ps)
+        // Chạy SQL trong transaction có sẵn
+        public static int ExecuteNonQuery(
+            SqlConnection c,
+            SqlTransaction t,
+            string sql,
+            params SqlParameter[] ps)
         {
             using var cmd = Build(c, t, sql, ps);
+
             return cmd.ExecuteNonQuery();
         }
 

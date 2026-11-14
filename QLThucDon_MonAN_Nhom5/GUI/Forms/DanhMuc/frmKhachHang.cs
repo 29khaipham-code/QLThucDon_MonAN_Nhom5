@@ -1,5 +1,5 @@
 ﻿using QLThucDon_MonAN_Nhom5.BLL;
-using QLThucDon_MonAN_Nhom5.DAL;
+//using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 using QLThucDon_MonAN_Nhom5.GUI;
 using System;
@@ -27,19 +27,28 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void LoadData()
         {
-            // Sử dụng GetAll() theo đúng BLL
-            dgvKhachHang.DataSource = _khachHangBLL.LayTatCa();
-
-            if (dgvKhachHang.Columns.Count > 0)
+            try
             {
-                dgvKhachHang.Columns["MaKhachHang"].HeaderText = "Mã KH";
-                dgvKhachHang.Columns["TenKhachHang"].HeaderText = "Tên Khách Hàng";
-                dgvKhachHang.Columns["DiaChi"].HeaderText = "Địa Chỉ";
-                dgvKhachHang.Columns["DienThoai"].HeaderText = "Điện Thoại";
-                dgvKhachHang.Columns["MaSoThue"].HeaderText = "Mã Số Thuế";
+                dgvKhachHang.DataSource = _khachHangBLL.LayTatCa();
+
+                if (dgvKhachHang.Columns.Count > 0)
+                {
+                    dgvKhachHang.Columns["MaKhachHang"].HeaderText = "Mã KH";
+                    dgvKhachHang.Columns["TenKhachHang"].HeaderText = "Tên Khách Hàng";
+                    dgvKhachHang.Columns["DiaChi"].HeaderText = "Địa Chỉ";
+                    dgvKhachHang.Columns["DienThoai"].HeaderText = "Điện Thoại";
+                    dgvKhachHang.Columns["MaSoThue"].HeaderText = "Mã Số Thuế";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi tải danh sách khách hàng:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
-
         private void SetControlState(bool editing)
         {
             btnThem.Enabled = !editing;
@@ -66,14 +75,34 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            _isAdding = true;
-            ClearInputs();
+            try
+            {
+                // Tạo mã trước, nếu lỗi thì không chuyển form sang trạng thái thêm
+                string maMoi = _khachHangBLL.TaoMaMoi();
 
-            // Gọi hàm NextCode() để tự động điền mã KH mới (VD: KH004)
-            txtMaKH.Text = _khachHangBLL.TaoMaMoi();
+                ClearInputs();
+                txtMaKH.Text = maMoi;
 
-            SetControlState(true);
-            txtTenKH.Focus();
+                _isAdding = true;
+                SetControlState(true);
+                txtTenKH.Focus();
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi khi tạo khách hàng mới:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void btnSua_Click(object sender, EventArgs e)
@@ -90,50 +119,110 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaKH.Text)) return;
-
-            if (MessageBox.Show("Xóa khách hàng này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            try
             {
-                // Sử dụng Delete()
-                _khachHangBLL.Xoa(txtMaKH.Text);
+                if (string.IsNullOrWhiteSpace(txtMaKH.Text))
+                {
+                    MessageBox.Show(
+                        "Vui lòng chọn khách hàng cần xóa!",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                DialogResult result = MessageBox.Show(
+                    "Bạn có chắc chắn muốn xóa khách hàng này không?",
+                    "Xác nhận xóa",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                    return;
+
+                _khachHangBLL.Xoa(txtMaKH.Text.Trim());
+
+                MessageBox.Show(
+                    "Xóa khách hàng thành công!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 LoadData();
                 ClearInputs();
+                SetControlState(false);
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi khi xóa khách hàng:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtTenKH.Text))
+            try
             {
-                MessageBox.Show("Tên khách hàng không được để trống!");
-                return;
-            }
+                if (string.IsNullOrWhiteSpace(txtTenKH.Text))
+                {
+                    MessageBox.Show("Tên khách hàng không được để trống!");
+                    txtTenKH.Focus();
+                    return;
+                }
 
-            KhachHangDTO kh = new KhachHangDTO
-            {
-                MaKhachHang = txtMaKH.Text,
-                TenKhachHang = txtTenKH.Text,
-                DiaChi = txtDiaChi.Text,
-                DienThoai = txtDienThoai.Text,
-                MaSoThue = txtMaSoThue.Text
-            };
+                var kh = new KhachHangDTO
+                {
+                    MaKhachHang = txtMaKH.Text.Trim(),
+                    TenKhachHang = txtTenKH.Text.Trim(),
+                    DiaChi = txtDiaChi.Text.Trim(),
+                    DienThoai = txtDienThoai.Text.Trim(),
+                    MaSoThue = txtMaSoThue.Text.Trim()
+                };
 
-            if (_isAdding)
-            {
-                // Sử dụng Insert()
-                _khachHangBLL.Them(kh);
-            }
-            else
-            {
-                // Sử dụng Update()
-                _khachHangBLL.Sua(kh);
-            }
+                if (_isAdding)
+                    _khachHangBLL.Them(kh);
+                else
+                    _khachHangBLL.Sua(kh);
 
-            LoadData();
-            SetControlState(false);
-            _isAdding = false;
+                MessageBox.Show(
+                    "Lưu thông tin khách hàng thành công!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                LoadData();
+                ClearInputs();
+                _isAdding = false;
+                SetControlState(false);
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi khi lưu khách hàng:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
-
         private void btnBoQua_Click(object sender, EventArgs e)
         {
             SetControlState(false);

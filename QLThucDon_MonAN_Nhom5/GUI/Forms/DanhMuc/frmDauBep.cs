@@ -1,4 +1,3 @@
-using Microsoft.Data.SqlClient;
 using QLThucDon_MonAN_Nhom5.BLL;
 using QLThucDon_MonAN_Nhom5.DTO;
 using QLThucDon_MonAN_Nhom5.GUI;
@@ -132,12 +131,39 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void NapMonAnDaChon(string ma)
         {
-            var list = _bll.LayMonLamDuoc(ma);
-            var dt = new DataTable();
-            dt.Columns.Add("MaMonAn"); dt.Columns.Add("TenMonAn");
-            dt.Columns.Add("MaXepLoai"); dt.Columns.Add("TenXepLoai");
-            foreach (var x in list) dt.Rows.Add(x.MaMonAn, x.TenMonAn, x.MaXepLoai, x.TenXepLoai);
-            GanBangMonAn(dt);
+            try
+            {
+                var list = _bll.LayMonLamDuoc(ma);
+
+                var dt = new DataTable();
+                dt.Columns.Add("MaMonAn");
+                dt.Columns.Add("TenMonAn");
+                dt.Columns.Add("MaXepLoai");
+                dt.Columns.Add("TenXepLoai");
+
+                foreach (var x in list)
+                {
+                    dt.Rows.Add(
+                        x.MaMonAn,
+                        x.TenMonAn,
+                        x.MaXepLoai,
+                        x.TenXepLoai);
+                }
+
+                GanBangMonAn(dt);
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                BaoLoi("Không tải được danh sách món ăn của đầu bếp.", ex);
+            }
         }
 
         private List<DauBepMonAnDTO> LayMonAnTrenGrid()
@@ -237,7 +263,21 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 button2.Enabled = true;
                 textBox2.Focus();
             }
-            catch (Exception ex) { _dangThem = false; BaoLoi("Không tạo được mã đầu bếp mới. Kiểm tra kết nối database.", ex); }
+            catch (BusinessException ex)
+            {
+                _dangThem = false;
+
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                _dangThem = false;
+                BaoLoi("Không tạo được mã đầu bếp mới.", ex);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -251,7 +291,18 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
             if (string.IsNullOrWhiteSpace(textBox1.Text)) { MessageBox.Show("Chọn đầu bếp cần xóa."); return; }
             if (MessageBox.Show("Bạn chắc chắn muốn xóa đầu bếp này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
             try { _bll.Xoa(textBox1.Text.Trim()); NapDanhSach(); XoaForm(); }
-            catch (Exception ex) { BaoLoi("Không thể xóa. Đầu bếp có thể đang được dùng trong thực đơn.", ex); }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                BaoLoi("Không thể xóa đầu bếp.", ex);
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -280,7 +331,26 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 button1.Enabled = false;
                 button2.Enabled = false;
             }
-            catch (Exception ex) { BaoLoi("Lưu không thành công. Kiểm tra dữ liệu và các danh mục liên quan.", ex); }
+            //catch (BusinessException ex)
+            //{
+            //    MessageBox.Show(
+            //        ex.Message,
+            //        "Thông báo",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Warning);
+            //}
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                BaoLoi("Lưu đầu bếp không thành công.", ex);
+            }
         }
 
         private void ChonDong(string ma)
@@ -306,10 +376,16 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private static void BaoLoi(string noiDung, Exception ex)
         {
-            string chiTiet = ex is SqlException ? "\nChi tiết SQL: " + ex.Message : "\nChi tiết: " + ex.Message;
-            MessageBox.Show(noiDung + chiTiet, "Quản lý đầu bếp", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+            string chiTiet = ex is BusinessException
+                ? ex.Message
+                : "Chi tiết: " + ex.Message;
 
+            MessageBox.Show(
+                noiDung + "\n" + chiTiet,
+                "Quản lý đầu bếp",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
         private bool ValidateHoTen(string hoTen)
         {
             hoTen = hoTen.Trim();

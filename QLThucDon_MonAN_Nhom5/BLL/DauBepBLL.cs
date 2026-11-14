@@ -3,31 +3,26 @@ using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Data;
+using System.Text;
+using System.Threading.Tasks;
+using QLThucDon_MonAN_Nhom5.DAL;
+using QLThucDon_MonAN_Nhom5.DTO;
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class DauBepBLL
     {
         private readonly IDauBepDAL _dal;
-        private readonly IDanhMucDAL _danhMucDAL;
-        private readonly IMonAnDAL _monAnDAL;
 
-        public DauBepBLL()
-            : this(new DauBepDAL(), new DanhMucDAL(), new MonAnDAL())
+        public DauBepBLL() : this(new DauBepDAL())
         {
         }
 
-        public DauBepBLL(IDauBepDAL dal, IDanhMucDAL danhMucDAL, IMonAnDAL monAnDAL)
+        public DauBepBLL(IDauBepDAL dal)
         {
             _dal = dal ?? throw new ArgumentNullException(nameof(dal));
-            _danhMucDAL = danhMucDAL ?? throw new ArgumentNullException(nameof(danhMucDAL));
-            _monAnDAL = monAnDAL ?? throw new ArgumentNullException(nameof(monAnDAL));
         }
-
-        // Các danh mục được lấy qua IDanhMucDAL, không đặt nhầm truy vấn danh mục
-        // vào IDauBepDAL. Danh sách món ăn lấy qua IMonAnDAL.
-        public List<DanhMucDTO> LayTrinhDo() =>
-            DbGuard.Run(() => _danhMucDAL.GetAll(LoaiDanhMuc.TrinhDo));
 
         public List<DanhMucDTO> LayNoiHoc() =>
             DbGuard.Run(() => _danhMucDAL.GetAll(LoaiDanhMuc.NoiHoc));

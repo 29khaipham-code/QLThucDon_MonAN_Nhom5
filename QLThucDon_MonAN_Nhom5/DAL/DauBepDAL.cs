@@ -65,7 +65,9 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 ORDER BY d.MaDauBep", Map,
                 DbHelper.P("@Ten", DbHelper.NullIfEmpty(ten)),
                 DbHelper.P("@NH", DbHelper.NullIfEmpty(maNoiHoc)),
-                DbHelper.P("@Mon", DbHelper.NullIfEmpty(maMonAn)));
+                DbHelper.P("@Mon", DbHelper.NullIfEmpty(maMonAn))
+            );
+        }
 
         public void Insert(DauBepDTO d, List<DauBepMonAnDTO> monAn) => DbHelper.RunInTransaction((c, t) =>
         {

@@ -1,6 +1,7 @@
 ﻿using QLThucDon_MonAN_Nhom5.BLL;
 using System;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
@@ -12,11 +13,12 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
         private readonly BaoCaoBLL _bll = new BaoCaoBLL();
         private readonly ThucDonBLL _thucDonBll = new ThucDonBLL();
 
-        // Tên cột trùng tên cột SQL trong BaoCaoDAL.ThucDonDayDu
+        // Tên cột tương ứng với dữ liệu từ BaoCaoDAL.ThucDonDayDu.
         private static readonly CotBaoCao[] Cot =
         {
-            new CotBaoCao("SoThucDon",    "Số TĐ",      0.8f, rong: 80),
-            new CotBaoCao("NgayDung",     "Ngày dùng",  1.0f, dinhDang: "dd/MM/yyyy", rong: 90),
+            new CotBaoCao("SoThucDon", "Số TĐ", 0.8f, rong: 80),
+            new CotBaoCao("NgayDung", "Ngày dùng", 1.0f,
+                dinhDang: "dd/MM/yyyy", rong: 90),
             new CotBaoCao("TenKhachHang", "Khách hàng", 1.5f, rong: 130),
             new CotBaoCao("MaSoThue",     "MST",        1.0f, rong: 90),
             new CotBaoCao("TenMonAn",     "Tên món",    1.8f),

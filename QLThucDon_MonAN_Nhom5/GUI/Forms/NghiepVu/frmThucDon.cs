@@ -534,9 +534,15 @@ bep.MaDauBep,
             {
                 txtSoThucDon.Text = thucDonBLL.TaoSoMoi();
             }
-            catch
+            catch (Exception ex)
             {
                 txtSoThucDon.Clear();
+
+                MessageBox.Show(
+                    "Không thể tạo số thực đơn mới:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
 
             TinhTongTien();
@@ -624,12 +630,10 @@ MessageBoxIcon.Warning);
 
                 ResetForm();
             }
-            catch (SqlException ex)
-                when (ex.Number == 2627 || ex.Number == 2601)
+            catch (BusinessException ex)
             {
                 MessageBox.Show(
-                    "Số thực đơn \"" + soTD +
-                    "\" đã tồn tại. Hãy nhập số khác!",
+                    ex.Message,
                     "Thông báo",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -683,6 +687,14 @@ MessageBoxIcon.Warning);
                     MessageBoxIcon.Information);
 
                 ResetForm();
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

@@ -18,7 +18,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -36,6 +36,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>8.0</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.105.1.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.0.105.1\lib\netstandard2.0\ClosedXML.dll</HintPath>
@@ -43,6 +63,10 @@
     <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
       <HintPath>..\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -179,6 +203,8 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -191,6 +217,65 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dsDoanhThu.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsMonAn.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsMonAn.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsMonAnDauBep.cs">
+      <DependentUpon>dsMonAnDauBep.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsMonAnDauBep.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsMonAnDauBep.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsThucDon.cs">
+      <DependentUpon>dsThucDon.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="dsThucDon.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsThucDon.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DTO\LoaiDanhMuc.cs" />
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoDoanhThu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoDoanhThu.Designer.cs">
+      <DependentUpon>frmXemBaoCaoDoanhThu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAn.Designer.cs">
+      <DependentUpon>frmXemBaoCaoMonAn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAnDauBep.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAnDauBep.Designer.cs">
+      <DependentUpon>frmXemBaoCaoMonAnDauBep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoThucDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoThucDon.Designer.cs">
+      <DependentUpon>frmXemBaoCaoThucDon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IKhachHangDAL.cs" />
+    <Compile Include="Interfaces\IMonAnDAL.cs" />
+    <Compile Include="Interfaces\IDanhMucDAL.cs" />
+    <Compile Include="Interfaces\IDauBepDAL.cs" />
+    <Compile Include="Interfaces\INguyenLieuDAL.cs" />
+    <Compile Include="Interfaces\IThucDonDAL.cs" />
+    <Compile Include="Interfaces\IBaoCaoDAL.cs" />
     <Compile Include="BLL\BaoCaoBLL.cs" />
     <Compile Include="BLL\BusinessException.cs" />
     <Compile Include="BLL\Check.cs" />
@@ -309,6 +394,34 @@
     <Compile Include="GUI\Program.cs" />
     <Compile Include="GUI\Ui.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\crptDoanhThu.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crptDoanhThu.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Reports\crptMonAn.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crptMonAn.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Reports\crptMonAnDauBep.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crptMonAnDauBep.rpt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\crptThucDon.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crptThucDon.rpt</DependentUpon>
+      <SubType>Component</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoDoanhThu.resx">
       <DependentUpon>frmBaoCaoDoanhThu.cs</DependentUpon>
     </EmbeddedResource>
@@ -320,6 +433,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.resx">
       <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoXxx.resx">
+      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmXemBaoCaoDoanhThu.resx">
+      <DependentUpon>frmXemBaoCaoDoanhThu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAn.resx">
+      <DependentUpon>frmXemBaoCaoMonAn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmXemBaoCaoMonAnDauBep.resx">
+      <DependentUpon>frmXemBaoCaoMonAnDauBep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\BaoCao\frmXemBaoCaoThucDon.resx">
+      <DependentUpon>frmXemBaoCaoThucDon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\DanhMuc\frmDanhMuc.resx">
       <DependentUpon>frmDanhMuc.cs</DependentUpon>
@@ -358,6 +486,70 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="Reports\crptThucDon.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crptThucDon.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\crptDoanhThu.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crptDoanhThu.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\crptMonAn.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crptMonAn.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\crptMonAnDauBep.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crptMonAnDauBep.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="dsDoanhThu.xsc">
+      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
+    </None>
+    <None Include="dsDoanhThu.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsDoanhThu.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsDoanhThu.xss">
+      <DependentUpon>dsDoanhThu.xsd</DependentUpon>
+    </None>
+    <None Include="dsMonAn.xsc">
+      <DependentUpon>dsMonAn.xsd</DependentUpon>
+    </None>
+    <None Include="dsMonAn.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsMonAn.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsMonAn.xss">
+      <DependentUpon>dsMonAn.xsd</DependentUpon>
+    </None>
+    <None Include="dsMonAnDauBep.xsc">
+      <DependentUpon>dsMonAnDauBep.xsd</DependentUpon>
+    </None>
+    <None Include="dsMonAnDauBep.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsMonAnDauBep.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsMonAnDauBep.xss">
+      <DependentUpon>dsMonAnDauBep.xsd</DependentUpon>
+    </None>
+    <None Include="dsThucDon.xsc">
+      <DependentUpon>dsThucDon.xsd</DependentUpon>
+    </None>
+    <None Include="dsThucDon.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsThucDon.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="dsThucDon.xss">
+      <DependentUpon>dsThucDon.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -374,6 +566,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Database\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.7.1.0\build\net462\Microsoft.Data.SqlClient.SNI.targets')" />

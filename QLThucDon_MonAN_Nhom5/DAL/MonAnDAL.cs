@@ -2,6 +2,9 @@
 using QLThucDon_MonAN_Nhom5.DTO;
 using System.Collections.Generic;
 using System.Data;
+using Microsoft.Data.SqlClient;
+using System.Configuration;
+using QLThucDon_MonAN_Nhom5.DTO;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
@@ -61,7 +64,9 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 ORDER BY m.MaMonAn", Map,
                 DbHelper.P("@Loai", DbHelper.NullIfEmpty(maLoai)),
                 DbHelper.P("@CD", DbHelper.NullIfEmpty(maCongDung)),
-                DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon)));
+                DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon))
+            );
+        }
 
         public List<MonAnDTO> GetByLoaiVaDauBep(string maLoai, string maDauBep) =>
             DbHelper.ExecuteList<MonAnDTO>(SelectBase + @"
