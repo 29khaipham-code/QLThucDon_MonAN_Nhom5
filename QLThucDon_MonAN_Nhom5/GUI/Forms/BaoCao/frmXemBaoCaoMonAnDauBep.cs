@@ -75,5 +75,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
 
             base.OnFormClosed(e);
         }
+
+        
     }
 }

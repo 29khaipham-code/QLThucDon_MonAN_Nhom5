@@ -268,14 +268,6 @@
     <Compile Include="GUI\Forms\BaoCao\frmXemBaoCaoThucDon.Designer.cs">
       <DependentUpon>frmXemBaoCaoThucDon.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IKhachHangDAL.cs" />
-    <Compile Include="Interfaces\IMonAnDAL.cs" />
-    <Compile Include="Interfaces\IDanhMucDAL.cs" />
-    <Compile Include="Interfaces\IDauBepDAL.cs" />
-    <Compile Include="Interfaces\INguyenLieuDAL.cs" />
-    <Compile Include="Interfaces\IThucDonDAL.cs" />
-    <Compile Include="Interfaces\IBaoCaoDAL.cs" />
     <Compile Include="BLL\BaoCaoBLL.cs" />
     <Compile Include="BLL\BusinessException.cs" />
     <Compile Include="BLL\Check.cs" />
@@ -433,9 +425,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoThucDon.resx">
       <DependentUpon>frmBaoCaoThucDon.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\BaoCao\frmBaoCaoXxx.resx">
-      <DependentUpon>frmBaoCaoXxx.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\BaoCao\frmXemBaoCaoDoanhThu.resx">
       <DependentUpon>frmXemBaoCaoDoanhThu.cs</DependentUpon>

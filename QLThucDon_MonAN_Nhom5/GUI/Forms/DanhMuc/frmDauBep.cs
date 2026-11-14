@@ -15,6 +15,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
     {
         // BLL đã làm việc thông qua IDauBepDAL; form không truy cập DAL trực tiếp.
         private readonly DauBepBLL _bll;
+        private readonly DanhMucBLL _danhMucBLL = new DanhMucBLL();
+        private readonly MonAnBLL _monAnBLL = new MonAnBLL();
         private bool _dangThem;
 
         // Constructor không tham số được giữ lại để WinForms Designer và frmMain sử dụng.
@@ -77,19 +79,22 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void NapDanhMuc()
         {
-            comboBox1.DataSource = _bll.LayTrinhDo();
+            comboBox1.DataSource =
+        _danhMucBLL.LayTatCa(LoaiDanhMuc.TrinhDo);
             comboBox1.DisplayMember = nameof(DanhMucDTO.Ten);
             comboBox1.ValueMember = nameof(DanhMucDTO.Ma);
 
-            comboBox2.DataSource = _bll.LayNoiHoc();
+            comboBox2.DataSource =
+        _danhMucBLL.LayTatCa(LoaiDanhMuc.NoiHoc);
             comboBox2.DisplayMember = nameof(DanhMucDTO.Ten);
             comboBox2.ValueMember = nameof(DanhMucDTO.Ma);
 
-            comboBox3.DataSource = _bll.LayDanhSachMonAn();
+            comboBox3.DataSource = _monAnBLL.LayTatCa();
             comboBox3.DisplayMember = nameof(MonAnDTO.TenMonAn);
             comboBox3.ValueMember = nameof(MonAnDTO.MaMonAn);
 
-            comboBox4.DataSource = _bll.LayXepLoai();
+            comboBox4.DataSource =
+        _danhMucBLL.LayTatCa(LoaiDanhMuc.XepLoai); ;
             comboBox4.DisplayMember = nameof(DanhMucDTO.Ten);
             comboBox4.ValueMember = nameof(DanhMucDTO.Ma);
             comboBox1.DropDownStyle = comboBox2.DropDownStyle = comboBox3.DropDownStyle = comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;

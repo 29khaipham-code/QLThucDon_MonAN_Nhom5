@@ -3,12 +3,6 @@ using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-using QLThucDon_MonAN_Nhom5.DAL;
-using QLThucDon_MonAN_Nhom5.DTO;
-using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class DauBepBLL
@@ -23,16 +17,6 @@ namespace QLThucDon_MonAN_Nhom5.BLL
         {
             _dal = dal ?? throw new ArgumentNullException(nameof(dal));
         }
-
-        public List<DanhMucDTO> LayNoiHoc() =>
-            DbGuard.Run(() => _danhMucDAL.GetAll(LoaiDanhMuc.NoiHoc));
-
-        public List<MonAnDTO> LayDanhSachMonAn() =>
-            DbGuard.Run(() => _monAnDAL.GetAll());
-
-        public List<DanhMucDTO> LayXepLoai() =>
-            DbGuard.Run(() => _danhMucDAL.GetAll(LoaiDanhMuc.XepLoai));
-
         public List<DauBepDTO> LayTatCa() => DbGuard.Run(() => _dal.GetAll());
         public DauBepDTO LayTheoMa(string ma) => DbGuard.Run(() => _dal.GetById(ma));
         public List<DauBepMonAnDTO> LayMonLamDuoc(string maDauBep) => DbGuard.Run(() => _dal.GetMonAn(maDauBep));

@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
 {
- 
+    /// <summary>
     /// Lớp cha của các form báo cáo dạng bảng (Template Method).
     /// Lớp con chỉ cần: gọi KhoiTaoBaoCao(...) trong constructor và ghi đè các hàm "hook":
     ///   CacCot, LayDuLieu, TinhTieuDe (bắt buộc), TenFileXuat, TinhThongKe, NapBoLoc... (tuỳ chọn).
     /// Các việc chung: định dạng giao diện, nạp lưới, Xem, Xuất Excel, In.
-    
+    /// </summary>
     public class BaseReportForm : BaseForm
     {
         private DataGridView _dgv;
@@ -28,6 +29,11 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
         protected virtual string TinhThongKe(DataTable dt) => "Số dòng: " + dt.Rows.Count;
         protected virtual void NapBoLoc() { }          // chạy trước lần Xem đầu tiên (nạp ComboBox lọc)
         protected virtual void SauKhiNapXong() { }     // chạy sau lần Xem đầu tiên (gắn sự kiện lọc)
+
+        // Crystal Report: lớp con khai báo file .rpt thì nút In mở báo cáo Crystal; không khai báo thì in bằng GDI+ như cũ
+        protected virtual string TenFileRpt => null;                    // vd "rptMonAn.rpt"
+        protected virtual string TenBangRpt => "Bang";                  // tên bảng trong dsBaoCao.xsd
+        protected virtual IDictionary<string, object> ThamSoRpt() => null;   // tham số bổ sung (tuỳ chọn)
 
         /// <summary>Gọi một lần trong constructor của lớp con, ngay sau InitializeComponent().</summary>
         protected void KhoiTaoBaoCao(DataGridView dgv, Button btnXem, Button btnXuat, Button btnIn,
@@ -52,7 +58,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
             // Sự kiện chung
             btnXem.Click += (s, e) => Xem();
             btnXuat.Click += (s, e) => BaoCaoHelper.XuatExcel(this, DuLieu, TieuDeBaoCao, CacCot, TenFileXuat);
-            btnIn.Click += (s, e) => BaoCaoHelper.In(this, DuLieu, TieuDeBaoCao, CacCot);
+            btnIn.Click += (s, e) => InBaoCao();
 
             Load += (s, e) =>
             {
@@ -76,5 +82,15 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
             _lblTieuDe.Text = TieuDeBaoCao;
             _lblSoDong.Text = TinhThongKe(dt);
         }
+        protected virtual void InBaoCao()
+        {
+            BaoCaoHelper.In(
+                this,
+                DuLieu,
+                TieuDeBaoCao,
+                CacCot
+            );
+        }
+
     }
 }

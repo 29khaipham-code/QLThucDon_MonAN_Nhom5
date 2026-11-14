@@ -66,7 +66,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
                 DbHelper.P("@CD", DbHelper.NullIfEmpty(maCongDung)),
                 DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon))
             );
-        }
+        
 
         public List<MonAnDTO> GetByLoaiVaDauBep(string maLoai, string maDauBep) =>
             DbHelper.ExecuteList<MonAnDTO>(SelectBase + @"

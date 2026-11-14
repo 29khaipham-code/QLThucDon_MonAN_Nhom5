@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QLThucDon_MonAN_Nhom5.Interfaces;
+
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
     //Các truy vấn báo cáo trả về DataTable để gắn thẳng vào DataGridView / RDLC

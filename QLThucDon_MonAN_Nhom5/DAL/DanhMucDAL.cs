@@ -1,16 +1,9 @@
 ﻿using QLThucDon_MonAN_Nhom5.DTO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using QLThucDon_MonAN_Nhom5.Interfaces;
-
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
     
-    public class DanhMucDAL : IDanhMucDAL
-    public enum LoaiDanhMuc { LoaiMon, CongDung, DonViTinh, NoiHoc, TrinhDo, XepLoai }
+    
     public class DanhMucDAL : IDanhMucDAL
     {
         private static readonly Dictionary<LoaiDanhMuc, (string Table, string Ma, string Ten, string Prefix)> Map = new Dictionary<LoaiDanhMuc, (string Table, string Ma, string Ten, string Prefix)>
@@ -28,7 +21,7 @@ namespace QLThucDon_MonAN_Nhom5.DAL
             var m = Map[loai];
             return DbHelper.ExecuteList<DanhMucDTO>(
                 $"SELECT {m.Ma} AS Ma, {m.Ten} AS Ten FROM {m.Table} ORDER BY {m.Ten}",
-                r => new DanhMucDTO { Ma = r.Str("Ma"), Ten = r.Str("Ten") });
+                r => new DanhMucDTO { Ma = r.Str("Ma"), Ten = r.Str("Ten") });      
         }
 
         public string NextCode(LoaiDanhMuc loai)

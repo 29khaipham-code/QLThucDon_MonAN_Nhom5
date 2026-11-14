@@ -1,7 +1,6 @@
 ﻿using QLThucDon_MonAN_Nhom5.BLL;
 using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
@@ -13,12 +12,11 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
         private readonly BaoCaoBLL _bll = new BaoCaoBLL();
         private readonly ThucDonBLL _thucDonBll = new ThucDonBLL();
 
-        // Tên cột tương ứng với dữ liệu từ BaoCaoDAL.ThucDonDayDu.
+        // Tên cột trùng tên cột SQL trong BaoCaoDAL.ThucDonDayDu
         private static readonly CotBaoCao[] Cot =
         {
-            new CotBaoCao("SoThucDon", "Số TĐ", 0.8f, rong: 80),
-            new CotBaoCao("NgayDung", "Ngày dùng", 1.0f,
-                dinhDang: "dd/MM/yyyy", rong: 90),
+            new CotBaoCao("SoThucDon",    "Số TĐ",      0.8f, rong: 80),
+            new CotBaoCao("NgayDung",     "Ngày dùng",  1.0f, dinhDang: "dd/MM/yyyy", rong: 90),
             new CotBaoCao("TenKhachHang", "Khách hàng", 1.5f, rong: 130),
             new CotBaoCao("MaSoThue",     "MST",        1.0f, rong: 90),
             new CotBaoCao("TenMonAn",     "Tên món",    1.8f),
@@ -33,6 +31,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
 
         protected override CotBaoCao[] CacCot => Cot;
         protected override string TenFileXuat => "ThongTinThucDon";
+        protected override string TenFileRpt => "crptThucDon.rpt";
+        protected override string TenBangRpt => "ThucDonDayDu";
         protected override bool LuoiXuongDong => true;
 
         protected override void NapBoLoc()
@@ -65,6 +65,22 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
             if (!string.IsNullOrEmpty(BaoCaoHelper.LayMaLoc(cmbLoc)) && dt.Rows.Count > 0)
                 s += "   |   Tổng tiền: " + Convert.ToDecimal(dt.Rows[0]["TongTien"]).ToString("N0");
             return s;
+        }
+        protected override void InBaoCao()
+        {
+            if (DuLieu == null || DuLieu.Rows.Count == 0)
+            {
+                Ui.Info("Không có dữ liệu để in báo cáo.");
+                return;
+            }
+
+            using (frmXemBaoCaoThucDon frm =
+                new frmXemBaoCaoThucDon(
+                    DuLieu,
+                    TieuDeBaoCao))
+            {
+                frm.ShowDialog(this);
+            }
         }
 
         public frmBaoCaoThucDon()

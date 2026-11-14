@@ -1,6 +1,5 @@
 ﻿using QLThucDon_MonAN_Nhom5.BLL;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 
 namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
@@ -12,10 +11,7 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
         private readonly BaoCaoBLL _bll = new BaoCaoBLL();
         private readonly DauBepBLL _dauBepBll = new DauBepBLL();
 
-        private string _tieuDe =
-            "DANH SÁCH MÓN ĂN CỦA TỪNG ĐẦU BẾP";
-
-        // Tên cột tương ứng với dữ liệu trả về từ BaoCaoDAL.MonAnTheoDauBep.
+        // Tên cột trùng tên cột SQL trong BaoCaoDAL.MonAnTheoDauBep
         private static readonly CotBaoCao[] Cot =
         {
             new CotBaoCao("MaDauBep",   "Mã đầu bếp",  1.0f, rong: 100),
@@ -29,6 +25,8 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
 
         protected override CotBaoCao[] CacCot => Cot;
         protected override string TenFileXuat => "MonAnTheoDauBep";
+        protected override string TenFileRpt => "crptMonAnDauBep.rpt";
+        protected override string TenBangRpt => "MonAnTheoDauBep";
 
         protected override void NapBoLoc()
         {
@@ -47,10 +45,24 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.BaoCao
         protected override string TinhTieuDe() =>
             string.IsNullOrEmpty(BaoCaoHelper.LayMaLoc(cmbLoc))
                 ? "DANH SÁCH MÓN ĂN CỦA TỪNG ĐẦU BẾP"
-                : "DANH SÁCH MÓN ĂN CỦA ĐẦU BẾP "
-                    + cmbLoc.Text.ToUpper();
+                : "DANH SÁCH MÓN ĂN CỦA ĐẦU BẾP " + cmbLoc.Text.ToUpper();
 
-            dgv.DataSource = _dt;
+        protected override void InBaoCao()
+        {
+            if (DuLieu == null || DuLieu.Rows.Count == 0)
+            {
+                Ui.Info("Không có dữ liệu để in báo cáo.");
+                return;
+            }
+
+            using (frmXemBaoCaoMonAnDauBep frm =
+                new frmXemBaoCaoMonAnDauBep(
+                    DuLieu,
+                    TieuDeBaoCao))
+            {
+                frm.ShowDialog(this);
+            }
+        }
 
         public frmBaoCaoMonTheoDauBep()
         {
