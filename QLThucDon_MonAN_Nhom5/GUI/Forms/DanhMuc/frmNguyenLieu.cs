@@ -1,6 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using QLThucDon_MonAN_Nhom5.BLL;
-using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 using System;
 using System.Collections.Generic;
@@ -36,20 +35,53 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void frmNguyenLieu_Load(object sender, EventArgs e)
         {
-            LoadComboBoxes();
-            LoadData();
-            SetControlState(false);
+            try
+            {
+                LoadComboBoxes();
+                LoadData();
+                SetControlState(false);
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể khởi tạo dữ liệu nguyên liệu:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void LoadComboBoxes()
         {
-            cmbDonViTinh.DataSource = _danhMucBLL.LayTatCa(LoaiDanhMuc.DonViTinh);
+            var donViTinh = _danhMucBLL.LayTatCa(LoaiDanhMuc.DonViTinh);
+            var congDung = _danhMucBLL.LayTatCa(LoaiDanhMuc.CongDung);
+
+            cmbDonViTinh.DataSource = donViTinh;
             cmbDonViTinh.DisplayMember = "Ten";
             cmbDonViTinh.ValueMember = "Ma";
+            cmbDonViTinh.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            cmbCongDung.DataSource = _danhMucBLL.LayTatCa(LoaiDanhMuc.CongDung);
+            cmbCongDung.DataSource = congDung;
             cmbCongDung.DisplayMember = "Ten";
             cmbCongDung.ValueMember = "Ma";
+            cmbCongDung.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            if (cmbDonViTinh.Items.Count == 0 || cmbCongDung.Items.Count == 0)
+            {
+                MessageBox.Show(
+                    "Danh mục Đơn vị tính hoặc Công dụng chưa có dữ liệu!",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
         }
 
         private void LoadData()
@@ -71,9 +103,21 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                     dgvNguyenLieu.Columns["MaCongDung"].Visible = false;
                 }
             }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
+                MessageBox.Show(
+                    "Lỗi tải dữ liệu nguyên liệu:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -105,68 +149,106 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            _isAdding = true;
-            SetControlState(true);
-            ClearInputs();
-            txtMaNL.Text = _nguyenLieuBLL.TaoMaMoi();
-            txtTenNL.Focus();
+            try
+            {
+                _isAdding = true;
+                SetControlState(true);
+                ClearInputs();
+
+                txtMaNL.Text = _nguyenLieuBLL.TaoMaMoi();
+                txtTenNL.Focus();
+            }
+            catch (BusinessException ex)
+            {
+                _isAdding = false;
+                SetControlState(false);
+
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                _isAdding = false;
+                SetControlState(false);
+
+                MessageBox.Show(
+                    "Không thể tạo mã nguyên liệu mới:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaNL.Text))
+            if (dgvNguyenLieu.CurrentRow == null ||
+                dgvNguyenLieu.CurrentRow.IsNewRow ||
+                dgvNguyenLieu.CurrentRow.DataBoundItem == null)
             {
-                MessageBox.Show("Vui lòng chọn nguyên liệu cần sửa!");
+                MessageBox.Show(
+                    "Vui lòng chọn nguyên liệu trong bảng trước khi sửa!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
             _isAdding = false;
             SetControlState(true);
             txtMaNL.Enabled = false;
             txtTenNL.Focus();
         }
-
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaNL.Text))
+            if (string.IsNullOrWhiteSpace(txtMaNL.Text))
             {
                 MessageBox.Show("Vui lòng chọn nguyên liệu cần xóa!");
                 return;
             }
 
-            if (MessageBox.Show("Xóa nguyên liệu này?", "Xác nhận",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show(
+                "Xóa nguyên liệu này?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            try
             {
-                try
-                {
-                    _nguyenLieuBLL.Xoa(txtMaNL.Text);
+                _nguyenLieuBLL.Xoa(txtMaNL.Text.Trim());
 
-                    MessageBox.Show("Xóa nguyên liệu thành công!");
+                MessageBox.Show(
+                    "Xóa nguyên liệu thành công!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-                    LoadData();
-                    ClearInputs();
-                }
-                catch (Microsoft.Data.SqlClient.SqlException ex)
-                {
-                    if (ex.Number == 50001)
-                    {
-                        MessageBox.Show(
-                            "Nguyên liệu đang được sử dụng trong món ăn, không thể xóa!",
-                            "Thông báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-                    }
-                    else
-                    {
-                        MessageBox.Show("Lỗi xóa dữ liệu: " + ex.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi xóa dữ liệu: " + ex.Message);
-                }
+                LoadData();
+                ClearInputs();
+                SetControlState(false);
+                _isAdding = false;
+            }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi xóa dữ liệu:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
+
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
@@ -183,33 +265,55 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 return;
             }
 
-            decimal donGia = 0;
-            decimal.TryParse(txtDonGia.Text, out donGia);
+            if (!decimal.TryParse(txtDonGia.Text.Trim(), out decimal donGia) || donGia < 0)
+            {
+                MessageBox.Show("Đơn giá phải là số hợp lệ và không được âm!");
+                txtDonGia.Focus();
+                return;
+            }
 
             NguyenLieuDTO nl = new NguyenLieuDTO
             {
-                MaNguyenLieu = txtMaNL.Text,
-                TenNguyenLieu = txtTenNL.Text,
+                MaNguyenLieu = txtMaNL.Text.Trim(),
+                TenNguyenLieu = txtTenNL.Text.Trim(),
                 MaDonViTinh = cmbDonViTinh.SelectedValue.ToString(),
                 MaCongDung = cmbCongDung.SelectedValue.ToString(),
                 DonGia = donGia,
-                DinhDuong = txtDinhDuong.Text
+                DinhDuong = txtDinhDuong.Text.Trim()
             };
 
             try
             {
-                if (_isAdding) _nguyenLieuBLL.Them(nl);
-                else _nguyenLieuBLL.Sua(nl);
+                if (_isAdding)
+                    _nguyenLieuBLL.Them(nl);
+                else
+                    _nguyenLieuBLL.Sua(nl);
+
+                MessageBox.Show("Lưu nguyên liệu thành công!");
 
                 LoadData();
+                ClearInputs();
                 SetControlState(false);
                 _isAdding = false;
             }
+            catch (BusinessException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi lưu dữ liệu: " + ex.Message);
+                MessageBox.Show(
+                    "Lỗi khi lưu nguyên liệu:\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
+
 
         private void btnBoQua_Click(object sender, EventArgs e)
         {

@@ -5,12 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
+using QLThucDon_MonAN_Nhom5.Interfaces;
 
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class KhachHangBLL
     {
-        private readonly KhachHangDAL _dal = new KhachHangDAL();
+        private readonly IKhachHangDAL _dal;
+
+        public KhachHangBLL() : this(new KhachHangDAL())
+        {
+        }
+
+        public KhachHangBLL(IKhachHangDAL dal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+        }
 
         public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
 

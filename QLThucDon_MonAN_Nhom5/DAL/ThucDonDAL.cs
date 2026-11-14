@@ -6,10 +6,10 @@ using System.Text;
 using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class ThucDonDAL
+    public class ThucDonDAL : IThucDonDAL
     {
         private const string SelectBase = @"
             SELECT td.SoThucDon, td.MaKhachHang, kh.TenKhachHang, kh.MaSoThue,

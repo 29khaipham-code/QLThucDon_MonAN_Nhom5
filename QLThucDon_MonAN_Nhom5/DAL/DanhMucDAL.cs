@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QLThucDon_MonAN_Nhom5.Interfaces;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public enum LoaiDanhMuc { LoaiMon, CongDung, DonViTinh, NoiHoc, TrinhDo, XepLoai }
-    public class DanhMucDAL
+    
+    public class DanhMucDAL : IDanhMucDAL
     {
         private static readonly Dictionary<LoaiDanhMuc, (string Table, string Ma, string Ten, string Prefix)> Map = new Dictionary<LoaiDanhMuc, (string Table, string Ma, string Ten, string Prefix)>
         {

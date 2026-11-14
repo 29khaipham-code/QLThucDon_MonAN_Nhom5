@@ -7,11 +7,11 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Configuration;
 using QLThucDon_MonAN_Nhom5.DTO;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class MonAnDAL
+    public class MonAnDAL : IMonAnDAL
     {
         private const string SelectBase = @"
             SELECT m.MaMonAn, m.TenMonAn, m.MaLoai, l.TenLoai, m.MaCongDung, cd.TenCongDung,
@@ -62,15 +62,16 @@ namespace QLThucDon_MonAN_Nhom5.DAL
         public string NextCode() => DbHelper.NextCode("MonAn", "MaMonAn", "MA", 3);
 
         // ---------- Yêu cầu 3: tìm món ăn theo loại, công dụng, tên ----------
-        public List<MonAnDTO> TimKiem(string maLoai, string maCongDung, string tenMon) =>
-            DbHelper.ExecuteList<MonAnDTO>(SelectBase + @"
-                WHERE (@Loai IS NULL OR m.MaLoai = @Loai)
-                  AND (@CD   IS NULL OR m.MaCongDung = @CD)
-                  AND (@Ten  IS NULL OR m.TenMonAn LIKE N'%' + @Ten + N'%')
-                ORDER BY m.MaMonAn", Map,
+        public List<MonAnDTO> TimKiem(string maLoai, string maCongDung, string tenMon)
+        {
+            return DbHelper.ExecuteProcList<MonAnDTO>(
+                "sp_TimKiemMonAn",
+                Map,
                 DbHelper.P("@Loai", DbHelper.NullIfEmpty(maLoai)),
                 DbHelper.P("@CD", DbHelper.NullIfEmpty(maCongDung)),
-                DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon)));
+                DbHelper.P("@Ten", DbHelper.NullIfEmpty(tenMon))
+            );
+        }
 
         // ---------- Yêu cầu 2: món thuộc loại X mà đầu bếp Y làm được ----------
         public List<MonAnDTO> GetByLoaiVaDauBep(string maLoai, string maDauBep) =>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsMonAnDauBep" targetNamespace="http://tempuri.org/dsMonAnDauBep.xsd" xmlns:mstns="http://tempuri.org/dsMonAnDauBep.xsd" xmlns="http://tempuri.org/dsMonAnDauBep.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsMonAnDauBep" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_UserDSName="dsMonAnDauBep" msprop:Generator_DataSetName="dsMonAnDauBep">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="tblMonAnDauBep" msprop:Generator_RowEvHandlerName="tblMonAnDauBepRowChangeEventHandler" msprop:Generator_RowDeletedName="tblMonAnDauBepRowDeleted" msprop:Generator_RowDeletingName="tblMonAnDauBepRowDeleting" msprop:Generator_RowEvArgName="tblMonAnDauBepRowChangeEvent" msprop:Generator_TablePropName="tblMonAnDauBep" msprop:Generator_RowChangedName="tblMonAnDauBepRowChanged" msprop:Generator_RowChangingName="tblMonAnDauBepRowChanging" msprop:Generator_TableClassName="tblMonAnDauBepDataTable" msprop:Generator_RowClassName="tblMonAnDauBepRow" msprop:Generator_TableVarName="tabletblMonAnDauBep" msprop:Generator_UserTableName="tblMonAnDauBep">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MaDauBep" msprop:Generator_ColumnPropNameInRow="MaDauBep" msprop:Generator_ColumnPropNameInTable="MaDauBepColumn" msprop:Generator_ColumnVarNameInTable="columnMaDauBep" msprop:Generator_UserColumnName="MaDauBep" type="xs:string" minOccurs="0" />
+              <xs:element name="TenDauBep" msprop:Generator_ColumnPropNameInRow="TenDauBep" msprop:Generator_ColumnPropNameInTable="TenDauBepColumn" msprop:Generator_ColumnVarNameInTable="columnTenDauBep" msprop:Generator_UserColumnName="TenDauBep" type="xs:string" minOccurs="0" />
+              <xs:element name="MaMonAn" msprop:Generator_ColumnPropNameInRow="MaMonAn" msprop:Generator_ColumnPropNameInTable="MaMonAnColumn" msprop:Generator_ColumnVarNameInTable="columnMaMonAn" msprop:Generator_UserColumnName="MaMonAn" type="xs:string" minOccurs="0" />
+              <xs:element name="TenMonAn" msprop:Generator_ColumnPropNameInRow="TenMonAn" msprop:Generator_ColumnPropNameInTable="TenMonAnColumn" msprop:Generator_ColumnVarNameInTable="columnTenMonAn" msprop:Generator_UserColumnName="TenMonAn" type="xs:string" minOccurs="0" />
+              <xs:element name="TenLoai" msprop:Generator_ColumnPropNameInRow="TenLoai" msprop:Generator_ColumnPropNameInTable="TenLoaiColumn" msprop:Generator_ColumnVarNameInTable="columnTenLoai" msprop:Generator_UserColumnName="TenLoai" type="xs:string" minOccurs="0" />
+              <xs:element name="DonGia" msprop:Generator_ColumnPropNameInRow="DonGia" msprop:Generator_ColumnPropNameInTable="DonGiaColumn" msprop:Generator_ColumnVarNameInTable="columnDonGia" msprop:Generator_UserColumnName="DonGia" type="xs:string" minOccurs="0" />
+              <xs:element name="TenXepLoai" msprop:Generator_ColumnPropNameInRow="TenXepLoai" msprop:Generator_ColumnPropNameInTable="TenXepLoaiColumn" msprop:Generator_ColumnVarNameInTable="columnTenXepLoai" msprop:Generator_UserColumnName="TenXepLoai" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

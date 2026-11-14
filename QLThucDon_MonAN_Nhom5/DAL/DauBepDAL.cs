@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class DauBepDAL
+    public class DauBepDAL : IDauBepDAL
     {
         private const string SelectBase = @"
             SELECT d.MaDauBep, d.TenDauBep, d.GioiTinh, d.DiaChi, d.DienThoai,
@@ -64,21 +64,16 @@ namespace QLThucDon_MonAN_Nhom5.DAL
         public string NextCode() => DbHelper.NextCode("DauBep", "MaDauBep", "DB", 3);
 
         // ---------- Yêu cầu 4: tìm đầu bếp theo tên, nơi học, món làm được ----------
-        public List<DauBepDTO> TimKiem(string ten, string maNoiHoc, string maMonAn) =>
-            DbHelper.ExecuteList<DauBepDTO>(@"
-                SELECT DISTINCT d.MaDauBep, d.TenDauBep, d.GioiTinh, d.DiaChi, d.DienThoai,
-                       d.MaTrinhDo, td.TenTrinhDo, d.MaNoiHoc, nh.TenNoiHoc
-                FROM DauBep d
-                JOIN TrinhDo td ON td.MaTrinhDo = d.MaTrinhDo
-                LEFT JOIN NoiHoc nh ON nh.MaNoiHoc = d.MaNoiHoc
-                LEFT JOIN DauBep_MonAn dm ON dm.MaDauBep = d.MaDauBep
-                WHERE (@Ten IS NULL OR d.TenDauBep LIKE N'%' + @Ten + N'%')
-                  AND (@NH  IS NULL OR d.MaNoiHoc = @NH)
-                  AND (@Mon IS NULL OR dm.MaMonAn = @Mon)
-                ORDER BY d.MaDauBep", Map,
+        public List<DauBepDTO> TimKiem(string ten, string maNoiHoc, string maMonAn)
+        {
+            return DbHelper.ExecuteProcList<DauBepDTO>(
+                "sp_TimKiemDauBep",
+                Map,
                 DbHelper.P("@Ten", DbHelper.NullIfEmpty(ten)),
                 DbHelper.P("@NH", DbHelper.NullIfEmpty(maNoiHoc)),
-                DbHelper.P("@Mon", DbHelper.NullIfEmpty(maMonAn)));
+                DbHelper.P("@Mon", DbHelper.NullIfEmpty(maMonAn))
+            );
+        }
 
         // ---------- CRUD ----------
         public void Insert(DauBepDTO d, List<DauBepMonAnDTO> monAn) => DbHelper.RunInTransaction((c, t) =>

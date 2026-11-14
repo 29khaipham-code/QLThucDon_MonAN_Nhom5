@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="QLThucDon_MonAN_Nhom5/QLThucDon_MonAN_Nhom5.csproj" Id="f4b34ac4-262c-466b-b100-a8defb1601a6" />
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="QLThucDon_MonAN_Nhom5/QLThucDon_MonAN_Nhom5.csproj" Id="f4b34ac4-262c-466b-b100-a8defb1601a6">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
 </Solution>

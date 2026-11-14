@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class NguyenLieuDAL
+    public class NguyenLieuDAL : INguyenLieuDAL
     {
         private const string SelectBase = @"
             SELECT nl.MaNguyenLieu, nl.TenNguyenLieu, nl.MaDonViTinh, dvt.TenDonViTinh,

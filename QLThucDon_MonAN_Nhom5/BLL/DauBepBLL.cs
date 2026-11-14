@@ -6,12 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class DauBepBLL
     {
-        private readonly DauBepDAL _dal = new DauBepDAL();
+        private readonly IDauBepDAL _dal;
+
+        public DauBepBLL() : this(new DauBepDAL())
+        {
+        }
+
+        public DauBepBLL(IDauBepDAL dal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+        }
 
         public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
         public DataTable LayTrinhDo() => DbGuard.Run(() => _dal.GetTrinhDo());

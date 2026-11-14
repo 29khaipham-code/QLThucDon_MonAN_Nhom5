@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Globalization;
 using System.Reflection;
 using QLThucDon_MonAN_Nhom5.BLL;
-using QLThucDon_MonAN_Nhom5.DAL;
+using QLThucDon_MonAN_Nhom5.DTO;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.TimKiem;
 using QLThucDon_MonAN_Nhom5.GUI.Forms.NghiepVu;

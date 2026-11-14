@@ -1,7 +1,7 @@
 ﻿
-using Microsoft.Data.SqlClient;
+
 using QLThucDon_MonAN_Nhom5.BLL;
-using QLThucDon_MonAN_Nhom5.DAL;
+//using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
 //using QLThucDon_MonAN_Nhom5.Helpers;
 using System;
@@ -842,11 +842,10 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
                 // Tải lại dữ liệu để lấy đơn giá mới từ cơ sở dữ liệu
                 LoadDanhSach(mon.MaMonAn);
             }
-            catch (SqlException ex)
-                when (ex.Number == 2627 || ex.Number == 2601)
+            catch (BusinessException ex)
             {
                 MessageBox.Show(
-                    "Mã món \"" + mon.MaMonAn + "\" đã tồn tại!",
+                    ex.Message,
                     "Thông báo",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -902,10 +901,10 @@ namespace QLThucDon_MonAN_Nhom5.GUI.Forms.DanhMuc
 
                 LoadDanhSach(null);
             }
-            catch (SqlException ex) when (ex.Number == 547)
+            catch (BusinessException ex)
             {
                 MessageBox.Show(
-                    "Không xoá được: món này đang có đầu bếp làm hoặc nằm trong thực đơn.",
+                    ex.Message,
                     "Thông báo",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);

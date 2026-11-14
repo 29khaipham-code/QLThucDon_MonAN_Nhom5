@@ -23,8 +23,18 @@ namespace QLThucDon_MonAN_Nhom5.BLL
 
         private static BusinessException Translate(SqlException ex) => ex.Number switch
         {
-            547 => new BusinessException("Dữ liệu đang được sử dụng ở nơi khác (hoặc tham chiếu không hợp lệ) nên không thực hiện được."),
-            var n when n == 2627 || n== 2601 => new BusinessException("Mã này đã tồn tại, vui lòng nhập mã khác."),
+            50001 => new BusinessException(
+                "Nguyên liệu đang được sử dụng trong món ăn, không thể xóa!"),
+
+            547 => new BusinessException(
+                "Dữ liệu đang được sử dụng ở nơi khác (hoặc tham chiếu không hợp lệ) nên không thực hiện được."),
+
+            2627 => new BusinessException(
+    "Mã này đã tồn tại, vui lòng nhập mã khác."),
+
+            2601 => new BusinessException(
+                "Mã này đã tồn tại, vui lòng nhập mã khác."),
+
             _ => new BusinessException("Lỗi cơ sở dữ liệu: " + ex.Message)
         };
     }

@@ -5,12 +5,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class NguyenLieuBLL
     {
-        private readonly NguyenLieuDAL _dal = new NguyenLieuDAL();
+        private readonly INguyenLieuDAL _dal;
+
+        public NguyenLieuBLL() : this(new NguyenLieuDAL())
+        {
+        }
+
+        public NguyenLieuBLL(INguyenLieuDAL dal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+        }
 
         public string TaoMaMoi() => DbGuard.Run(() => _dal.NextCode());
 

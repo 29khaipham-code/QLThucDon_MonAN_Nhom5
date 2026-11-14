@@ -6,15 +6,35 @@ using System.Linq;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public class ThucDonBLL
     {
-        private readonly ThucDonDAL _dal = new ThucDonDAL();
-        private readonly DauBepDAL _dauBepDal = new DauBepDAL();
-        private readonly MonAnDAL _monAnDal = new MonAnDAL();
-        private readonly KhachHangDAL _khachHangDal = new KhachHangDAL();
+        private readonly IThucDonDAL _dal;
+        private readonly IDauBepDAL _dauBepDal;
+        private readonly IMonAnDAL _monAnDal;
+        private readonly IKhachHangDAL _khachHangDal;
+
+        public ThucDonBLL() : this(
+            new ThucDonDAL(),
+            new DauBepDAL(),
+            new MonAnDAL(),
+            new KhachHangDAL())
+        {
+        }
+
+        public ThucDonBLL(
+            IThucDonDAL dal,
+            IDauBepDAL dauBepDal,
+            IMonAnDAL monAnDal,
+            IKhachHangDAL khachHangDal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+            _dauBepDal = dauBepDal ?? throw new ArgumentNullException(nameof(dauBepDal));
+            _monAnDal = monAnDal ?? throw new ArgumentNullException(nameof(monAnDal));
+            _khachHangDal = khachHangDal ?? throw new ArgumentNullException(nameof(khachHangDal));
+        }
 
         public List<KhachHangDTO> LayKhachHang() => DbGuard.Run(() => _khachHangDal.GetAll());
         public List<DauBepDTO> LayDauBep() => DbGuard.Run(() => _dauBepDal.GetAll());

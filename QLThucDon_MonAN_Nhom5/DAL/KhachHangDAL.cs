@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QLThucDon_MonAN_Nhom5.Interfaces;
 
 namespace QLThucDon_MonAN_Nhom5.DAL
 {
-    public class KhachHangDAL
+    public class KhachHangDAL : IKhachHangDAL
     {
         private static KhachHangDTO Map(Microsoft.Data.SqlClient.SqlDataReader r) => new KhachHangDTO
         {

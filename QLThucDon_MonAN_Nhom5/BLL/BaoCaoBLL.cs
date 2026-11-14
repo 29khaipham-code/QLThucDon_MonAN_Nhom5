@@ -6,14 +6,23 @@ using System.Text;
 using System.Threading.Tasks;
 using QLThucDon_MonAN_Nhom5.DAL;
 using QLThucDon_MonAN_Nhom5.DTO;
-
+using QLThucDon_MonAN_Nhom5.Interfaces;
 namespace QLThucDon_MonAN_Nhom5.BLL
 {
     public enum KieuThongKe { Thang , Quy , Nam}
     
     public class BaoCaoBLL
     {
-        private readonly BaoCaoDAL _dal = new BaoCaoDAL();
+        private readonly IBaoCaoDAL _dal;
+
+        public BaoCaoBLL() : this(new BaoCaoDAL())
+        {
+        }
+
+        public BaoCaoBLL(IBaoCaoDAL dal)
+        {
+            _dal = dal ?? throw new ArgumentNullException(nameof(dal));
+        }
 
         public DataTable DoanhThuDauBep(KieuThongKe kieu ,int nam , int ky = 0)// ky co the la thang co the la quy
         {
